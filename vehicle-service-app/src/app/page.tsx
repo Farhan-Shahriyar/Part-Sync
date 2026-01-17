@@ -1,0 +1,166 @@
+import { getDashboardStats } from "@/lib/queries";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Activity, AlertTriangle, DollarSign, Wrench, Users } from "lucide-react";
+
+export const dynamic = 'force-dynamic';
+
+export default async function DashboardPage() {
+  const { revenueCtx, lowStock, topMechanics } = await getDashboardStats();
+
+  const currentMonthRevenue = revenueCtx[0]?.monthly_revenue || 0;
+  const lastMonthRevenue = revenueCtx[1]?.monthly_revenue || 0;
+  const growth = lastMonthRevenue > 0 ? ((currentMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 : 0;
+
+  return (
+    <div className="min-h-screen bg-background p-8 font-sans text-foreground">
+      <header className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+            Service Center Dashboard
+          </h1>
+          <p className="mt-2 text-muted-foreground text-lg">
+            Real-time overview of operations and performance.
+          </p>
+        </div>
+        <div className="flex gap-4">
+          <span className="glass px-4 py-2 rounded-full text-sm font-medium text-cyan-300 border-cyan-800/50 border">
+            Live System
+          </span>
+        </div>
+      </header>
+
+      {/* KPI Section */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <Card className="border-l-4 border-l-blue-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue (Month)</CardTitle>
+            <DollarSign className="h-4 w-4 text-blue-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">${currentMonthRevenue.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              <span className={growth >= 0 ? "text-green-500" : "text-red-500"}>
+                {growth > 0 ? "+" : ""}{growth.toFixed(1)}%
+              </span> from last month
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-cyan-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Jobs Completed</CardTitle>
+            <Activity className="h-4 w-4 text-cyan-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{revenueCtx[0]?.total_orders || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Updates live</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-orange-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Low Stock Alerts</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-orange-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{lowStock.length} Items</div>
+            <p className="text-xs text-muted-foreground mt-1">Require attention</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-purple-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Active Mechanics</CardTitle>
+            <Users className="h-4 w-4 text-purple-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">{topMechanics.length} Top</div>
+            <p className="text-xs text-muted-foreground mt-1">Performers</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+
+        {/* Revenue Chart Placeholder / List */}
+        <Card className="col-span-4">
+          <CardHeader>
+            <CardTitle>Recent Revenue Trend</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {revenueCtx.map((m: any, i: number) => (
+                <div key={i} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-blue-500" />
+                    <span className="font-medium text-white">{m.month_name.trim()} {m.yr}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="block font-bold text-white">${m.monthly_revenue.toLocaleString()}</span>
+                    <span className="text-xs text-muted-foreground">{m.total_orders} Orders</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Low Stock & Mechanics */}
+        <div className="col-span-3 space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-orange-500" />
+                Critically Low Stock
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-4">
+                {lowStock.map((item: any, i: number) => (
+                  <li key={i} className="flex justify-between items-center border-b border-border pb-2 last:border-0 last:pb-0">
+                    <div>
+                      <p className="font-medium text-white">{item.part_name}</p>
+                      <p className="text-xs text-muted-foreground">{item.part_number}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-red-400 font-bold block">{item.quantity_on_hand} left</span>
+                      <span className="text-xs text-muted-foreground">Reorder at {item.reorder_level}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Wrench className="h-5 w-5 text-purple-500" />
+                Top Mechanics
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-4">
+                {topMechanics.map((mech: any, i: number) => (
+                  <li key={i} className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center font-bold text-xs text-white">
+                        {mech.mechanic.split(' ').map((n: string) => n[0]).join('')}
+                      </div>
+                      <span className="font-medium text-white">{mech.mechanic}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="block font-bold text-white">${mech.total_revenue.toLocaleString()}</span>
+                      <span className="text-xs text-muted-foreground">{mech.total_jobs_completed} Jobs</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
