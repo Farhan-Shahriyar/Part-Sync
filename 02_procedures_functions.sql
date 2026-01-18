@@ -210,14 +210,7 @@ BEGIN
 
     INSERT INTO audit_logs (table_name, record_id, action, old_data, new_data)
     VALUES (TG_TABLE_NAME, 
-            CASE 
-                WHEN TG_OP = 'DELETE' THEN OLD.inventory_id::TEXT -- Example for inventory, needs generic handling or per-table setup in real world. 
-                ELSE NEW.inventory_id::TEXT -- Assuming inventory for this specific example trigger or using dynamic SQL for strictly generic which is complex.
-                -- For simplicity/safety in this demo, let's assume we attach this to tables with evident IDs or cast the whole record.
-                -- We will just cast the first column value if possible, or use a generic ID.
-                -- Better approach for this demo:
-                COALESCE(NEW.inventory_id, OLD.inventory_id)::TEXT
-            END,
+            COALESCE(NEW.inventory_id, OLD.inventory_id)::TEXT,
             TG_OP, v_old_data, v_new_data);
             
     RETURN NEW;

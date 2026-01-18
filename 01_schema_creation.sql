@@ -34,6 +34,11 @@ CREATE TABLE audit_logs (
 CREATE TABLE audit_logs_y2025m01 PARTITION OF audit_logs FOR VALUES FROM ('2025-01-01') TO ('2025-02-01');
 CREATE TABLE audit_logs_y2025m02 PARTITION OF audit_logs FOR VALUES FROM ('2025-02-01') TO ('2025-03-01');
 CREATE TABLE audit_logs_y2025m03 PARTITION OF audit_logs FOR VALUES FROM ('2025-03-01') TO ('2025-04-01');
+
+-- Adding 2026 Partitions as the current demo year is 2026
+CREATE TABLE audit_logs_y2026m01 PARTITION OF audit_logs FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
+CREATE TABLE audit_logs_y2026m02 PARTITION OF audit_logs FOR VALUES FROM ('2026-02-01') TO ('2026-03-01');
+CREATE TABLE audit_logs_y2026m03 PARTITION OF audit_logs FOR VALUES FROM ('2026-03-01') TO ('2026-04-01');
 -- ... Additional partitions would be managed by a maintenance job
 
 -- 3. Customers
