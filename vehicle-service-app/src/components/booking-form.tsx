@@ -31,7 +31,9 @@ export function BookingForm({ customers, serviceTypes }: { customers: any[], ser
                 <CardDescription>Schedule a new service appointment.</CardDescription>
             </CardHeader>
             <CardContent>
-                <form action={createBooking} className="space-y-6">
+                <form action={async (formData) => {
+                    await createBooking(formData);
+                }} className="space-y-6">
 
                     <div className="space-y-2">
                         <Label htmlFor="customerId" className="flex items-center gap-2">

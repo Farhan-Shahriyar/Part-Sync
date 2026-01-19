@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./vehicle-service-app
+      dockerfile: Dockerfile
+    container_name: vehicle-service-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=root
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=vehicle_service_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: vehicle-service-db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=vehicle_service_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./01_schema_creation.sql:/docker-entrypoint-initdb.d/01_schema_creation.sql
+      - ./02_procedures_functions.sql:/docker-entrypoint-initdb.d/02_procedures_functions.sql
+      - ./03_seed_data.sql:/docker-entrypoint-initdb.d/03_seed_data.sql
+      - ./04_complex_queries.sql:/docker-entrypoint-initdb.d/04_complex_queries.sql
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
