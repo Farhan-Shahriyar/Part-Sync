@@ -21,14 +21,14 @@ export default async function MechanicPage() {
                     <p className="text-muted-foreground col-span-full">No active jobs assigned.</p>
                 )}
                 {jobs.map((job: any) => (
-                    <Card key={job.job_id} className="border-l-4 border-l-blue-500 hover:shadow-lg transition-shadow">
+                    <Card key={job.job_id} className="border-l-4 border-l-orange-500 hover:shadow-lg transition-shadow">
                         <CardHeader>
                             <div className="flex justify-between items-start">
                                 <div>
                                     <CardTitle className="text-lg">{job.service_name}</CardTitle>
-                                    <p className="text-sm text-blue-400 font-medium">Order #{job.order_id}</p>
+                                    <p className="text-sm text-orange-500 font-medium">Order #{job.order_id}</p>
                                 </div>
-                                <span className={`px-2 py-1 rounded text-xs font-bold ${job.status === 'IN_PROGRESS' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-blue-500/20 text-blue-500'
+                                <span className={`px-2 py-1 rounded text-xs font-bold ${job.status === 'IN_PROGRESS' ? 'bg-amber-500/20 text-amber-700' : 'bg-orange-500/20 text-orange-600'
                                     }`}>
                                     {job.status}
                                 </span>

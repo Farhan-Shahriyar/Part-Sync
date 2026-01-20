@@ -59,40 +59,41 @@
 
 @layer base {
   :root {
-    --background: oklch(0.98 0.01 240);
-    /* Soft Cool White/Gray */
-    --foreground: oklch(0.25 0.05 260);
-    /* Deep Slate Blue */
+    --background: oklch(0.98 0.02 85);
+    /* Warm Cream */
+    --foreground: oklch(0.25 0.02 50);
+    /* Warm Chocolate/Charcoal */
 
-    --card: oklch(1 0 0);
-    /* Pure White */
-    --card-foreground: oklch(0.25 0.05 260);
+    --card: oklch(0.99 0.005 85);
+    /* Near white warm */
+    --card-foreground: oklch(0.25 0.02 50);
 
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.25 0.05 260);
+    --popover: oklch(0.99 0.005 85);
+    --popover-foreground: oklch(0.25 0.02 50);
 
-    --primary: oklch(0.55 0.22 260);
-    /* Vibrant Royal Blue */
-    --primary-foreground: oklch(0.98 0 0);
+    --primary: oklch(0.65 0.22 35);
+    /* Vibrant Orange/Coral */
+    --primary-foreground: oklch(0.98 0.01 85);
 
-    --secondary: oklch(0.95 0.06 260);
-    /* Light Lavender */
-    --secondary-foreground: oklch(0.35 0.1 260);
+    --secondary: oklch(0.9 0.15 85);
+    /* Golden Yellow */
+    --secondary-foreground: oklch(0.25 0.02 50);
 
-    --muted: oklch(0.96 0.01 260);
-    --muted-foreground: oklch(0.55 0.04 260);
+    --muted: oklch(0.96 0.01 85);
+    /* Beige */
+    --muted-foreground: oklch(0.55 0.04 50);
 
-    --accent: oklch(0.92 0.08 200);
-    /* Soft Cyan/Turquoise */
-    --accent-foreground: oklch(0.3 0.1 200);
+    --accent: oklch(0.85 0.1 50);
+    /* Soft Amber */
+    --accent-foreground: oklch(0.25 0.02 50);
 
     --destructive: oklch(0.6 0.2 25);
     /* Soft Red */
     --destructive-foreground: oklch(0.98 0 0);
 
-    --border: oklch(0.9 0.03 260);
-    --input: oklch(0.92 0.02 260);
-    --ring: oklch(0.55 0.22 260);
+    --border: oklch(0.92 0.02 85);
+    --input: oklch(0.92 0.02 85);
+    --ring: oklch(0.65 0.22 35);
 
     --radius: 0.5rem;
   }
@@ -116,9 +117,10 @@
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 253, 245, 0.7);
+  /* Warmer glass tint */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(255, 166, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(60, 30, 0, 0.05), 0 2px 4px -1px rgba(60, 30, 0, 0.03);
 }

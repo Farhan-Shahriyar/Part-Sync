@@ -25,7 +25,7 @@ export function BookingForm({ customers, serviceTypes }: { customers: any[], ser
     }
 
     return (
-        <Card className="max-w-xl mx-auto border-blue-500/30 shadow-2xl shadow-blue-900/20">
+        <Card className="max-w-xl mx-auto border-orange-500/30 shadow-2xl shadow-orange-900/20">
             <CardHeader>
                 <CardTitle className="text-2xl">Book a Service</CardTitle>
                 <CardDescription>Schedule a new service appointment.</CardDescription>
@@ -99,7 +99,7 @@ export function BookingForm({ customers, serviceTypes }: { customers: any[], ser
                         <Input type="datetime-local" name="date" id="date" required className="fill-foreground" />
                     </div>
 
-                    <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-2">
+                    <Button type="submit" className="w-full bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-600 hover:to-rose-700 text-white font-bold py-2">
                         Confirm Booking
                     </Button>
                 </form>
