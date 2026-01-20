@@ -12,7 +12,7 @@ export default async function MechanicPage() {
     return (
         <div className="min-h-screen bg-background p-8">
             <header className="mb-8">
-                <h1 className="text-3xl font-bold text-white">Mechanic Portal</h1>
+                <h1 className="text-3xl font-bold">Mechanic Portal</h1>
                 <p className="text-muted-foreground">Welcome back, Mike Davidson. Here are your active jobs.</p>
             </header>
 
@@ -43,9 +43,9 @@ export default async function MechanicPage() {
                                 <Clock className="w-4 h-4" />
                                 <span>Due: {new Date(job.order_date).toLocaleDateString()}</span>
                             </div>
-                            <div className="pt-2 border-t border-white/10">
+                            <div className="pt-2 border-t border-border">
                                 <p className="text-xs text-muted-foreground mb-1">Customer</p>
-                                <p className="text-sm font-medium text-white">{job.customer_name}</p>
+                                <p className="text-sm font-medium">{job.customer_name}</p>
                             </div>
                         </CardContent>
                         <CardFooter className="flex justify-end gap-2">

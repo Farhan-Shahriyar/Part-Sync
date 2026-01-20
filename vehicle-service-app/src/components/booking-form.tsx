@@ -42,7 +42,7 @@ export function BookingForm({ customers, serviceTypes }: { customers: any[], ser
                         <select
                             name="customerId"
                             id="customerId"
-                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm text-white focus:ring-2 focus:ring-ring focus:outline-none"
+                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
                             onChange={handleCustomerChange}
                             required
                         >
@@ -62,7 +62,7 @@ export function BookingForm({ customers, serviceTypes }: { customers: any[], ser
                         <select
                             name="vehicleId"
                             id="vehicleId"
-                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm text-white focus:ring-2 focus:ring-ring focus:outline-none disabled:opacity-50"
+                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none disabled:opacity-50"
                             disabled={loadingVehicles || vehicles.length === 0}
                             required
                         >
@@ -80,7 +80,7 @@ export function BookingForm({ customers, serviceTypes }: { customers: any[], ser
                         <select
                             name="serviceTypeId"
                             id="serviceTypeId"
-                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm text-white focus:ring-2 focus:ring-ring focus:outline-none"
+                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
                             required
                         >
                             <option value="" className="bg-background">Select Service</option>
@@ -96,7 +96,7 @@ export function BookingForm({ customers, serviceTypes }: { customers: any[], ser
                         <Label htmlFor="date" className="flex items-center gap-2">
                             <CalendarIcon className="w-4 h-4 text-primary" /> Expected Date
                         </Label>
-                        <Input type="datetime-local" name="date" id="date" required className="text-white fill-white" />
+                        <Input type="datetime-local" name="date" id="date" required className="fill-foreground" />
                     </div>
 
                     <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-2">

@@ -37,7 +37,7 @@ export default async function DashboardPage() {
             <DollarSign className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">${currentMonthRevenue.toLocaleString()}</div>
+            <div className="text-2xl font-bold">${currentMonthRevenue.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground mt-1">
               <span className={growth >= 0 ? "text-green-500" : "text-red-500"}>
                 {growth > 0 ? "+" : ""}{growth.toFixed(1)}%
@@ -52,7 +52,7 @@ export default async function DashboardPage() {
             <Activity className="h-4 w-4 text-cyan-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">{revenueCtx[0]?.total_orders || 0}</div>
+            <div className="text-2xl font-bold">{revenueCtx[0]?.total_orders || 0}</div>
             <p className="text-xs text-muted-foreground mt-1">Updates live</p>
           </CardContent>
         </Card>
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
             <AlertTriangle className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">{lowStock.length} Items</div>
+            <div className="text-2xl font-bold">{lowStock.length} Items</div>
             <p className="text-xs text-muted-foreground mt-1">Require attention</p>
           </CardContent>
         </Card>
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
             <Users className="h-4 w-4 text-purple-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">{topMechanics.length} Top</div>
+            <div className="text-2xl font-bold">{topMechanics.length} Top</div>
             <p className="text-xs text-muted-foreground mt-1">Performers</p>
           </CardContent>
         </Card>
@@ -94,10 +94,10 @@ export default async function DashboardPage() {
                 <div key={i} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 rounded-full bg-blue-500" />
-                    <span className="font-medium text-white">{m.month_name.trim()} {m.yr}</span>
+                    <span className="font-medium">{m.month_name.trim()} {m.yr}</span>
                   </div>
                   <div className="text-right">
-                    <span className="block font-bold text-white">${m.monthly_revenue.toLocaleString()}</span>
+                    <span className="block font-bold">${m.monthly_revenue.toLocaleString()}</span>
                     <span className="text-xs text-muted-foreground">{m.total_orders} Orders</span>
                   </div>
                 </div>
@@ -120,7 +120,7 @@ export default async function DashboardPage() {
                 {lowStock.map((item: any, i: number) => (
                   <li key={i} className="flex justify-between items-center border-b border-border pb-2 last:border-0 last:pb-0">
                     <div>
-                      <p className="font-medium text-white">{item.part_name}</p>
+                      <p className="font-medium">{item.part_name}</p>
                       <p className="text-xs text-muted-foreground">{item.part_number}</p>
                     </div>
                     <div className="text-right">
@@ -148,10 +148,10 @@ export default async function DashboardPage() {
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center font-bold text-xs text-white">
                         {mech.mechanic.split(' ').map((n: string) => n[0]).join('')}
                       </div>
-                      <span className="font-medium text-white">{mech.mechanic}</span>
+                      <span className="font-medium">{mech.mechanic}</span>
                     </div>
                     <div className="text-right">
-                      <span className="block font-bold text-white">${mech.total_revenue.toLocaleString()}</span>
+                      <span className="block font-bold">${mech.total_revenue.toLocaleString()}</span>
                       <span className="text-xs text-muted-foreground">{mech.total_jobs_completed} Jobs</span>
                     </div>
                   </li>

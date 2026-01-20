@@ -30,15 +30,15 @@ export default function AddMechanicPage() {
                     <form action={formAction} className="space-y-4">
 
                         <div className="space-y-2 pb-4 border-b border-white/10 mb-4">
-                            <h3 className="font-semibold text-white mb-2">User Account</h3>
+                            <h3 className="font-semibold mb-2">User Account</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="username">Username</Label>
-                                    <Input id="username" name="username" required className="text-white" />
+                                    <Input id="username" name="username" required className="" />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="password">Password</Label>
-                                    <Input id="password" name="password" type="password" required className="text-white" />
+                                    <Input id="password" name="password" type="password" required className="" />
                                 </div>
                             </div>
                         </div>
@@ -46,22 +46,22 @@ export default function AddMechanicPage() {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="firstName">First Name</Label>
-                                <Input id="firstName" name="firstName" required className="text-white" />
+                                <Input id="firstName" name="firstName" required className="" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="lastName">Last Name</Label>
-                                <Input id="lastName" name="lastName" required className="text-white" />
+                                <Input id="lastName" name="lastName" required className="" />
                             </div>
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="specialty">Specialty</Label>
-                            <Input id="specialty" name="specialty" className="text-white" placeholder="e.g. Engines, Electronics" />
+                            <Input id="specialty" name="specialty" className="" placeholder="e.g. Engines, Electronics" />
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="hourlyRate">Hourly Rate ($)</Label>
-                            <Input id="hourlyRate" name="hourlyRate" type="number" step="0.01" required className="text-white" />
+                            <Input id="hourlyRate" name="hourlyRate" type="number" step="0.01" required className="" />
                         </div>
 
                         {state?.message && (

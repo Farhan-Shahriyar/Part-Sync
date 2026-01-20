@@ -31,27 +31,27 @@ export default function AddCustomerPage() {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="firstName">First Name</Label>
-                                <Input id="firstName" name="firstName" required className="text-white" />
+                                <Input id="firstName" name="firstName" required className="" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="lastName">Last Name</Label>
-                                <Input id="lastName" name="lastName" required className="text-white" />
+                                <Input id="lastName" name="lastName" required className="" />
                             </div>
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" name="email" type="email" required className="text-white" />
+                            <Input id="email" name="email" type="email" required className="" />
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="phone">Phone</Label>
-                            <Input id="phone" name="phone" required className="text-white" />
+                            <Input id="phone" name="phone" required className="" />
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="address">Address</Label>
-                            <Input id="address" name="address" className="text-white" />
+                            <Input id="address" name="address" className="" />
                         </div>
 
                         {state?.message && (

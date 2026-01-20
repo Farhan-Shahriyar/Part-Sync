@@ -35,7 +35,7 @@ export function AddVehicleForm({ customers }: { customers: any[] }) {
                                 name="customerId"
                                 id="customerId"
                                 required
-                                className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm text-white focus:ring-2 focus:ring-ring focus:outline-none"
+                                className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
                             >
                                 <option value="" className="bg-background">Select Customer</option>
                                 {customers.map((c) => (
@@ -49,33 +49,33 @@ export function AddVehicleForm({ customers }: { customers: any[] }) {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="make">Make</Label>
-                                <Input id="make" name="make" required className="text-white" placeholder="e.g. Toyota" />
+                                <Input id="make" name="make" required className="" placeholder="e.g. Toyota" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="model">Model</Label>
-                                <Input id="model" name="model" required className="text-white" placeholder="e.g. Camry" />
+                                <Input id="model" name="model" required className="" placeholder="e.g. Camry" />
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="year">Year</Label>
-                                <Input id="year" name="year" type="number" required className="text-white" placeholder="2023" />
+                                <Input id="year" name="year" type="number" required className="" placeholder="2023" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="color">Color</Label>
-                                <Input id="color" name="color" className="text-white" placeholder="Silver" />
+                                <Input id="color" name="color" className="" placeholder="Silver" />
                             </div>
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="vin">VIN</Label>
-                            <Input id="vin" name="vin" required className="text-white" />
+                            <Input id="vin" name="vin" required className="" />
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="licensePlate">License Plate</Label>
-                            <Input id="licensePlate" name="licensePlate" required className="text-white" />
+                            <Input id="licensePlate" name="licensePlate" required className="" />
                         </div>
 
                         {state?.message && (
