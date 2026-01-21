@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Users, Car, Package, Wrench, LayoutDashboard } from "lucide-react";
+import { LogoutButton } from "@/components/logout-button";
 
 const navItems = [
     { href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -35,6 +36,10 @@ export function AdminNav() {
                     </Link>
                 );
             })}
+
+            <div className="mt-auto pt-4 border-t border-border">
+                <LogoutButton />
+            </div>
         </nav>
     );
 }

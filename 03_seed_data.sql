@@ -28,7 +28,10 @@ INSERT INTO users (username, password_hash, role) VALUES
 ('manager_bob', 'hash_bob_456', 'MANAGER'),
 ('mechanic_mike', 'hash_mike_789', 'MECHANIC'),
 ('mechanic_sarah', 'hash_sarah_000', 'MECHANIC'),
-('receptionist_alice', 'hash_alice_111', 'RECEPTIONIST')
+('receptionist_alice', 'hash_alice_111', 'RECEPTIONIST'),
+('customer_john', 'hash_john_123', 'CUSTOMER'),
+('customer_jane', 'hash_jane_456', 'CUSTOMER'),
+('customer_robert', 'hash_robert_789', 'CUSTOMER')
 ON CONFLICT (username) DO NOTHING;
 
 -- 2. Mechanics
@@ -38,10 +41,10 @@ INSERT INTO mechanics (user_id, first_name, last_name, specialty, hourly_rate) V
 (NULL, 'Tom', 'Wrench', 'General Maintenance', 40.00);
 
 -- 3. Customers
-INSERT INTO customers (first_name, last_name, email, phone, address) VALUES
-('John', 'Doe', 'john.doe@example.com', '555-0101', '123 Maple St'),
-('Jane', 'Smith', 'jane.smith@example.com', '555-0102', '456 Oak Ave'),
-('Robert', 'Brown', 'robert.b@example.com', '555-0103', '789 Pine Ln')
+INSERT INTO customers (user_id, first_name, last_name, email, phone, address) VALUES
+((SELECT user_id FROM users WHERE username = 'customer_john'), 'John', 'Doe', 'john.doe@example.com', '555-0101', '123 Maple St'),
+((SELECT user_id FROM users WHERE username = 'customer_jane'), 'Jane', 'Smith', 'jane.smith@example.com', '555-0102', '456 Oak Ave'),
+((SELECT user_id FROM users WHERE username = 'customer_robert'), 'Robert', 'Brown', 'robert.b@example.com', '555-0103', '789 Pine Ln')
 ON CONFLICT (email) DO NOTHING;
 
 -- 4. Vehicles

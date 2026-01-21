@@ -1,19 +1,25 @@
-import { getMechanicJobs } from "@/lib/queries";
+import { getMechanicJobsByUserId } from "@/lib/queries";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Wrench, Clock, CheckCircle } from "lucide-react";
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
 
 export default async function MechanicPage() {
-    // Hardcoded for MVP: Mechanic ID 1 (Mike)
-    const jobs = await getMechanicJobs(1);
+    const session = await getSession();
+    if (!session || session.role !== 'MECHANIC') {
+        redirect('/login');
+    }
+
+    const jobs = await getMechanicJobsByUserId(session.user_id);
 
     return (
         <div className="min-h-screen bg-background p-8">
             <header className="mb-8">
                 <h1 className="text-3xl font-bold">Mechanic Portal</h1>
-                <p className="text-muted-foreground">Welcome back, Mike Davidson. Here are your active jobs.</p>
+                <p className="text-muted-foreground">Welcome back, {session.username}. Here are your active jobs.</p>
             </header>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -37,7 +43,7 @@ export default async function MechanicPage() {
                         <CardContent className="space-y-3">
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <Wrench className="w-4 h-4" />
-                                <span>{job.make} {job.model} ({job.license_plate})</span>
+                                <span className="font-semibold">{job.make} {job.model} ({job.license_plate})</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <Clock className="w-4 h-4" />
@@ -51,10 +57,10 @@ export default async function MechanicPage() {
                         <CardFooter className="flex justify-end gap-2">
                             <Button variant="outline" size="sm">Details</Button>
                             {job.status === 'ASSIGNED' && (
-                                <Button size="sm">Start Job</Button>
+                                <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white">Start Job</Button>
                             )}
                             {job.status === 'IN_PROGRESS' && (
-                                <Button size="sm" variant="secondary">Complete</Button>
+                                <Button size="sm" variant="secondary" className="bg-green-600 hover:bg-green-700 text-white">Complete</Button>
                             )}
                         </CardFooter>
                     </Card>

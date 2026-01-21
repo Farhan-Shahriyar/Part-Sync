@@ -1,166 +1,87 @@
-import { getDashboardStats } from "@/lib/queries";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, AlertTriangle, DollarSign, Wrench, Users } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Wrench, ShieldCheck, Clock, User } from "lucide-react";
 
-export const dynamic = 'force-dynamic';
-
-export default async function DashboardPage() {
-  const { revenueCtx, lowStock, topMechanics } = await getDashboardStats();
-
-  const currentMonthRevenue = revenueCtx[0]?.monthly_revenue || 0;
-  const lastMonthRevenue = revenueCtx[1]?.monthly_revenue || 0;
-  const growth = lastMonthRevenue > 0 ? ((currentMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 : 0;
-
+export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background p-8 font-sans text-foreground">
-      <header className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-orange-400 to-rose-400 bg-clip-text text-transparent">
-            Service Center Dashboard
-          </h1>
-          <p className="mt-2 text-muted-foreground text-lg">
-            Real-time overview of operations and performance.
-          </p>
+    <div className="min-h-screen bg-background flex flex-col">
+      <header className="px-8 py-6 flex justify-between items-center border-b border-border/40 backdrop-blur-sm sticky top-0 z-50">
+        <div className="flex items-center gap-2">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-rose-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-orange-500/20">
+            <Wrench className="w-5 h-5" />
+          </div>
+          <span className="text-xl font-bold bg-gradient-to-r from-orange-600 to-rose-600 bg-clip-text text-transparent">
+            PartSync
+          </span>
         </div>
         <div className="flex gap-4">
-          <span className="glass px-4 py-2 rounded-full text-sm font-medium text-orange-600 border-orange-200 border">
-            Live System
-          </span>
+          <Link href="/login">
+            <Button variant="ghost" className="text-muted-foreground hover:text-foreground">Log in</Button>
+          </Link>
+          <Link href="/register">
+            <Button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold">
+              Get Started
+            </Button>
+          </Link>
         </div>
       </header>
 
-      {/* KPI Section */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-        <Card className="border-l-4 border-l-orange-500">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue (Month)</CardTitle>
-            <DollarSign className="h-4 w-4 text-orange-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${currentMonthRevenue.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              <span className={growth >= 0 ? "text-green-500" : "text-red-500"}>
-                {growth > 0 ? "+" : ""}{growth.toFixed(1)}%
-              </span> from last month
-            </p>
-          </CardContent>
-        </Card>
+      <main className="flex-1 flex flex-col justify-center items-center text-center p-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-100/40 via-background to-background -z-10" />
 
-        <Card className="border-l-4 border-l-rose-500">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Jobs Completed</CardTitle>
-            <Activity className="h-4 w-4 text-rose-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{revenueCtx[0]?.total_orders || 0}</div>
-            <p className="text-xs text-muted-foreground mt-1">Updates live</p>
-          </CardContent>
-        </Card>
+        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 max-w-4xl text-foreground">
+          Expert Vehicle Service <br />
+          <span className="bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">
+            Simplified.
+          </span>
+        </h1>
 
-        <Card className="border-l-4 border-l-amber-500">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Low Stock Alerts</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-amber-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{lowStock.length} Items</div>
-            <p className="text-xs text-muted-foreground mt-1">Require attention</p>
-          </CardContent>
-        </Card>
+        <p className="text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed">
+          The all-in-one platform for vehicle maintenance, service tracking, and inventory management.
+          Monitor your repairs in real-time.
+        </p>
 
-        <Card className="border-l-4 border-l-purple-500">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Active Mechanics</CardTitle>
-            <Users className="h-4 w-4 text-orange-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{topMechanics.length} Top</div>
-            <p className="text-xs text-muted-foreground mt-1">Performers</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-
-        {/* Revenue Chart Placeholder / List */}
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Recent Revenue Trend</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {revenueCtx.map((m: any, i: number) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-orange-500" />
-                    <span className="font-medium">{m.month_name.trim()} {m.yr}</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="block font-bold">${m.monthly_revenue.toLocaleString()}</span>
-                    <span className="text-xs text-muted-foreground">{m.total_orders} Orders</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Low Stock & Mechanics */}
-        <div className="col-span-3 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-orange-500" />
-                Critically Low Stock
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-4">
-                {lowStock.map((item: any, i: number) => (
-                  <li key={i} className="flex justify-between items-center border-b border-border pb-2 last:border-0 last:pb-0">
-                    <div>
-                      <p className="font-medium">{item.part_name}</p>
-                      <p className="text-xs text-muted-foreground">{item.part_number}</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-red-400 font-bold block">{item.quantity_on_hand} left</span>
-                      <span className="text-xs text-muted-foreground">Reorder at {item.reorder_level}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Wrench className="h-5 w-5 text-purple-500" />
-                Top Mechanics
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-4">
-                {topMechanics.map((mech: any, i: number) => (
-                  <li key={i} className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-rose-500 flex items-center justify-center font-bold text-xs text-white">
-                        {mech.mechanic.split(' ').map((n: string) => n[0]).join('')}
-                      </div>
-                      <span className="font-medium">{mech.mechanic}</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="block font-bold">${mech.total_revenue.toLocaleString()}</span>
-                      <span className="text-xs text-muted-foreground">{mech.total_jobs_completed} Jobs</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+        <div className="flex flex-wrap gap-4 justify-center mb-16">
+          <Link href="/register">
+            <Button size="lg" className="h-12 px-8 text-lg bg-gradient-to-r from-orange-600 to-rose-600 hover:from-orange-700 hover:to-rose-700 text-white shadow-xl shadow-orange-500/20">
+              Book a Service
+            </Button>
+          </Link>
+          <Link href="/login">
+            <Button size="lg" variant="outline" className="h-12 px-8 text-lg border-orange-200 hover:bg-orange-50 hover:text-orange-700">
+              Mechanic Portal
+            </Button>
+          </Link>
         </div>
-      </div>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl w-full text-left">
+          <div className="p-6 rounded-2xl bg-white border border-border/50 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
+              <ShieldCheck className="w-6 h-6 text-orange-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Reliable Service</h3>
+            <p className="text-muted-foreground">Certified mechanics and genuine parts ensure your vehicle runs perfectly.</p>
+          </div>
+          <div className="p-6 rounded-2xl bg-white border border-border/50 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center mb-4">
+              <Clock className="w-6 h-6 text-rose-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Real-time Updates</h3>
+            <p className="text-muted-foreground">Track your repair status live from your personal dashboard.</p>
+          </div>
+          <div className="p-6 rounded-2xl bg-white border border-border/50 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-4">
+              <User className="w-6 h-6 text-amber-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Customer First</h3>
+            <p className="text-muted-foreground">Easy booking, transparent pricing, and complete service history.</p>
+          </div>
+        </div>
+      </main>
+
+      <footer className="py-8 text-center text-sm text-muted-foreground border-t border-border/40">
+        &copy; 2026 PartSync Vehicle Services. All rights reserved.
+      </footer>
     </div>
   );
 }
