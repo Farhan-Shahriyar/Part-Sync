@@ -135,9 +135,17 @@ export async function getDashboardStats() {
     LIMIT 3;
   `);
 
+  // Pending Jobs
+  const pendingJobsRes = await query(`
+        SELECT COUNT(*) as count 
+        FROM service_jobs 
+        WHERE status = 'PENDING' AND mechanic_id IS NULL
+    `);
+
   return {
     revenueCtx: revenueRes.rows,
     lowStock: lowStockRes.rows,
-    topMechanics: mechanicRes.rows
+    topMechanics: mechanicRes.rows,
+    pendingJobs: parseInt(pendingJobsRes.rows[0].count)
   };
 }

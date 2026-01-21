@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Car, Calendar, History, Plus } from "lucide-react";
 import Link from "next/link";
+import { LogoutButton } from "@/components/logout-button";
 
 export default async function CustomerDashboard() {
     const session = await getSession();
@@ -29,11 +30,14 @@ export default async function CustomerDashboard() {
                     </h1>
                     <p className="text-muted-foreground">Welcome, {customer.first_name} {customer.last_name}</p>
                 </div>
-                <Link href="/customer/book">
-                    <Button className="bg-gradient-to-r from-orange-500 to-rose-500 text-white font-bold hover:shadow-lg transition-shadow">
-                        <Plus className="w-4 h-4 mr-2" /> Book Service
-                    </Button>
-                </Link>
+                <div className="flex gap-2">
+                    <Link href="/customer/book">
+                        <Button className="bg-gradient-to-r from-orange-500 to-rose-500 text-white font-bold hover:shadow-lg transition-shadow">
+                            <Plus className="w-4 h-4 mr-2" /> Book Service
+                        </Button>
+                    </Link>
+                    <LogoutButton />
+                </div>
             </header>
 
             {/* Vehicles Section */}

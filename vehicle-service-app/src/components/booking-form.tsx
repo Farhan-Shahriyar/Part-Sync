@@ -8,52 +8,19 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CalendarIcon, Car, User } from "lucide-react"
 
-export function BookingForm({ customers, serviceTypes }: { customers: any[], serviceTypes: any[] }) {
-    const [vehicles, setVehicles] = useState<any[]>([])
-    const [loadingVehicles, setLoadingVehicles] = useState(false)
-
-    const handleCustomerChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const custId = parseInt(e.target.value);
-        if (!custId) {
-            setVehicles([]);
-            return;
-        }
-        setLoadingVehicles(true);
-        const ves = await fetchVehiclesAction(custId);
-        setVehicles(ves);
-        setLoadingVehicles(false);
-    }
+export function BookingForm({ vehicles, serviceTypes, customerId }: { vehicles: any[], serviceTypes: any[], customerId: number }) {
 
     return (
         <Card className="max-w-xl mx-auto border-orange-500/30 shadow-2xl shadow-orange-900/20">
             <CardHeader>
                 <CardTitle className="text-2xl">Book a Service</CardTitle>
-                <CardDescription>Schedule a new service appointment.</CardDescription>
+                <CardDescription>Select your vehicle and the required service.</CardDescription>
             </CardHeader>
             <CardContent>
                 <form action={async (formData) => {
+                    formData.append('customerId', customerId.toString());
                     await createBooking(formData);
                 }} className="space-y-6">
-
-                    <div className="space-y-2">
-                        <Label htmlFor="customerId" className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-primary" /> Customer
-                        </Label>
-                        <select
-                            name="customerId"
-                            id="customerId"
-                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
-                            onChange={handleCustomerChange}
-                            required
-                        >
-                            <option value="" className="bg-background">Select Customer</option>
-                            {customers.map((c) => (
-                                <option key={c.customer_id} value={c.customer_id} className="bg-background">
-                                    {c.first_name} {c.last_name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
 
                     <div className="space-y-2">
                         <Label htmlFor="vehicleId" className="flex items-center gap-2">
@@ -62,8 +29,7 @@ export function BookingForm({ customers, serviceTypes }: { customers: any[], ser
                         <select
                             name="vehicleId"
                             id="vehicleId"
-                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none disabled:opacity-50"
-                            disabled={loadingVehicles || vehicles.length === 0}
+                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
                             required
                         >
                             <option value="" className="bg-background">Select Vehicle</option>

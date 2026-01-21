@@ -9,8 +9,22 @@ export async function fetchVehiclesAction(customerId: number) {
     return await getVehicles(customerId);
 }
 
+import { getSession } from "@/lib/auth";
+
 export async function createBooking(formData: FormData) {
+    const session = await getSession();
+    if (!session || session.role !== 'CUSTOMER') {
+        redirect('/login');
+    }
+
     const customerId = formData.get('customerId');
+
+    // Verify session user owns this customer profile
+    const custRes = await query('SELECT user_id FROM customers WHERE customer_id = $1', [customerId]);
+    if (custRes.rows[0].user_id !== session.user_id) {
+        return { error: 'Unauthorized booking attempt' };
+    }
+
     const vehicleId = formData.get('vehicleId');
     const serviceTypeId = formData.get('serviceTypeId');
     const date = formData.get('date');
@@ -41,6 +55,6 @@ export async function createBooking(formData: FormData) {
         return { error: 'Failed to create booking' };
     }
 
-    revalidatePath('/');
-    redirect('/');
+    revalidatePath('/customer/dashboard');
+    redirect('/customer/dashboard');
 }

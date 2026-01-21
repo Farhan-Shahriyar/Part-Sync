@@ -5,7 +5,7 @@ import { Activity, AlertTriangle, DollarSign, Wrench, Users } from "lucide-react
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
-    const { revenueCtx, lowStock, topMechanics } = await getDashboardStats();
+    const { revenueCtx, lowStock, topMechanics, pendingJobs } = await getDashboardStats();
 
     const currentMonthRevenue = revenueCtx[0]?.monthly_revenue || 0;
     const lastMonthRevenue = revenueCtx[1]?.monthly_revenue || 0;
@@ -36,6 +36,17 @@ export default async function AdminDashboardPage() {
                                 {growth > 0 ? "+" : ""}{growth.toFixed(1)}%
                             </span> from last month
                         </p>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-red-500">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium text-muted-foreground">Pending Assignments</CardTitle>
+                        <AlertTriangle className="h-4 w-4 text-red-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{pendingJobs}</div>
+                        <p className="text-xs text-muted-foreground mt-1">Jobs awaiting mechanic</p>
                     </CardContent>
                 </Card>
 

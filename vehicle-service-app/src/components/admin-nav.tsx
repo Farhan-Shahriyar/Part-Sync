@@ -7,7 +7,8 @@ import { Users, Car, Package, Wrench, LayoutDashboard } from "lucide-react";
 import { LogoutButton } from "@/components/logout-button";
 
 const navItems = [
-    { href: "/admin", label: "Overview", icon: LayoutDashboard },
+    { href: "/admin/dashboard", label: "Overview", icon: LayoutDashboard },
+    { href: "/admin/jobs", label: "Jobs", icon: Wrench },
     { href: "/admin/data-entry/customers", label: "Add Customer", icon: Users },
     { href: "/admin/data-entry/vehicles", label: "Add Vehicle", icon: Car },
     { href: "/admin/data-entry/parts", label: "Add Inventory", icon: Package },
