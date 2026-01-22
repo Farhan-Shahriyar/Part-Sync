@@ -3,16 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Users, Car, Package, Wrench, LayoutDashboard } from "lucide-react";
+import { Users, Car, Package, Wrench, LayoutDashboard, FileText, PlusCircle } from "lucide-react";
 import { LogoutButton } from "@/components/logout-button";
 
 const navItems = [
     { href: "/admin/dashboard", label: "Overview", icon: LayoutDashboard },
-    { href: "/admin/jobs", label: "Jobs", icon: Wrench },
-    { href: "/admin/data-entry/customers", label: "Add Customer", icon: Users },
-    { href: "/admin/data-entry/vehicles", label: "Add Vehicle", icon: Car },
-    { href: "/admin/data-entry/parts", label: "Add Inventory", icon: Package },
-    { href: "/admin/data-entry/mechanics", label: "Add Mechanic", icon: Wrench },
+    { href: "/admin/orders", label: "Orders", icon: FileText },
+    { href: "/admin/mechanics", label: "Mechanics", icon: Wrench },
+    { href: "/admin/customers", label: "Customers", icon: Users },
+    { href: "/admin/inventory", label: "Inventory", icon: Package },
+    // Data Entry Submenu could be separate, but keeping simple for now
+    { href: "/admin/data-entry/customers", label: "Add Customer", icon: PlusCircle },
 ];
 
 export function AdminNav() {

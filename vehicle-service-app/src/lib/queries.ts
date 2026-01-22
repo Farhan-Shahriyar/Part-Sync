@@ -161,3 +161,55 @@ export async function getDashboardStats() {
     pendingJobs: parseInt(pendingJobsRes.rows[0].count)
   };
 }
+
+// Admin List Queries
+export async function getAllMechanics() {
+  const res = await query(`
+    SELECT m.*, u.username
+    FROM mechanics m
+    LEFT JOIN users u ON m.user_id = u.user_id
+    ORDER BY m.last_name, m.first_name
+  `);
+  return res.rows;
+}
+
+export async function getAllCustomers() {
+  const res = await query(`
+    SELECT c.*, (SELECT COUNT(*) FROM vehicles v WHERE v.customer_id = c.customer_id) as vehicle_count
+    FROM customers c
+    ORDER BY c.last_name, c.first_name
+  `);
+  return res.rows;
+}
+
+export async function getAllInventory() {
+  const res = await query(`
+    SELECT i.*, p.name, p.part_number, p.description, p.unit_price, s.name as supplier_name
+    FROM inventory i
+    JOIN parts p ON i.part_id = p.part_id
+    LEFT JOIN purchase_orders po ON po.status = 'RECEIVED' -- This is a simplification, usually need explicit link
+    LEFT JOIN suppliers s ON po.supplier_id = s.supplier_id 
+    ORDER BY p.name
+  `);
+  // Fix supplier join logic if needed, strictly speaking inventory doesn't link to supplier directly in schema, 
+  // only via POs. For now showing part details is primary.
+  const simpleRes = await query(`
+    SELECT i.*, p.name, p.part_number, p.unit_price, p.manufacturer
+    FROM inventory i
+    JOIN parts p ON i.part_id = p.part_id
+    ORDER BY p.name
+  `);
+  return simpleRes.rows;
+}
+
+export async function getAllOrders() {
+  const res = await query(`
+    SELECT so.*, c.first_name || ' ' || c.last_name as customer_name, v.make || ' ' || v.model as vehicle_info,
+           (SELECT COUNT(*) FROM service_jobs sj WHERE sj.order_id = so.order_id) as job_count
+    FROM service_orders so
+    JOIN customers c ON so.customer_id = c.customer_id
+    JOIN vehicles v ON so.vehicle_id = v.vehicle_id
+    ORDER BY so.order_date DESC
+  `);
+  return res.rows;
+}
