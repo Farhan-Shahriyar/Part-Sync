@@ -116,6 +116,15 @@ CREATE TABLE inventory (
     last_restocked_at TIMESTAMPTZ
 );
 
+-- 9b. Service Requirements (BOM - Bill of Materials for Services)
+CREATE TABLE service_requirements (
+    requirement_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    service_type_id INT NOT NULL REFERENCES service_types(service_type_id) ON DELETE CASCADE,
+    part_id INT NOT NULL REFERENCES parts(part_id),
+    quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
+    UNIQUE(service_type_id, part_id)
+);
+
 -- 10. Service Orders (The Booking/Header)
 CREATE TABLE service_orders (
     order_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

@@ -18,7 +18,10 @@ TRUNCATE TABLE
     users, 
     service_types, 
     suppliers, 
+    service_types, 
+    suppliers, 
     parts,
+    service_requirements,
     audit_logs
 RESTART IDENTITY CASCADE;
 
@@ -85,8 +88,19 @@ INSERT INTO inventory (part_id, quantity_on_hand, reorder_level) VALUES
 ((SELECT part_id FROM parts WHERE part_number = 'FLT-OIL-001'), 50, 10),
 ((SELECT part_id FROM parts WHERE part_number = 'BRK-PAD-001'), 20, 5),
 ((SELECT part_id FROM parts WHERE part_number = 'SPK-PLG-NGK'), 60, 24),
-((SELECT part_id FROM parts WHERE part_number = 'AIR-FLT-009'), 30, 5)
+    ((SELECT part_id FROM parts WHERE part_number = 'AIR-FLT-009'), 30, 5)
 ON CONFLICT (part_id) DO NOTHING;
+
+-- 8b. Service Requirements (Seed)
+INSERT INTO service_requirements (service_type_id, part_id, quantity) VALUES
+-- Oil Change needs Oil and Filter
+((SELECT service_type_id FROM service_types WHERE name = 'Oil Change'), (SELECT part_id FROM parts WHERE part_number = 'OIL-5W30'), 4),
+((SELECT service_type_id FROM service_types WHERE name = 'Oil Change'), (SELECT part_id FROM parts WHERE part_number = 'FLT-OIL-001'), 1),
+-- Brake Pad Replacement needs Brake Pads
+((SELECT service_type_id FROM service_types WHERE name = 'Brake Pad Replacement'), (SELECT part_id FROM parts WHERE part_number = 'BRK-PAD-001'), 1),
+-- Tune-up needs Spark Plugs and Air Filter
+((SELECT service_type_id FROM service_types WHERE name = 'Engine Tune-up'), (SELECT part_id FROM parts WHERE part_number = 'SPK-PLG-NGK'), 4),
+((SELECT service_type_id FROM service_types WHERE name = 'Engine Tune-up'), (SELECT part_id FROM parts WHERE part_number = 'AIR-FLT-009'), 1);
 
 -- 9. Purchase Orders (Restocking History)
 INSERT INTO purchase_orders (supplier_id, order_date, status, total_amount) VALUES

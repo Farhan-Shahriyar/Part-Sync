@@ -45,6 +45,18 @@ export async function getMechanicJobsByUserId(userId: number) {
   return res.rows;
 }
 
+
+export async function getServiceRequirements(serviceTypeId: number) {
+  const res = await query(`
+    SELECT p.name, p.part_number, sr.quantity, i.quantity_on_hand
+    FROM service_requirements sr
+    JOIN parts p ON sr.part_id = p.part_id
+    LEFT JOIN inventory i ON p.part_id = i.part_id
+    WHERE sr.service_type_id = $1
+  `, [serviceTypeId]);
+  return res.rows;
+}
+
 export async function getCustomerStats(userId: number) {
   // Get customer details
   const customerRes = await query('SELECT * FROM customers WHERE user_id = $1', [userId]);
