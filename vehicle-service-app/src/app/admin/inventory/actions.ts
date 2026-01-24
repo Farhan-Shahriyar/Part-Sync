@@ -3,20 +3,15 @@
 import pool from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-export async function restockInventory(partId: number, quantity: number, unitCost: number) {
+export async function restockInventory(partId: number, quantity: number, unitCost: number, supplierId: number) {
     const client = await pool.connect();
     try {
         await client.query("BEGIN");
 
         // 1. Create Purchase Order (Automatic for Restock)
-        // Check if there is an 'Internal Restock' supplier or just use first one/dummy for now as requirement didn't specify supplier selection
-        // For simplicity, we'll pick the first available supplier or create a generic one if needed.
-        // Or better, let's assume we order from the first supplier found for now.
-        const supplierRes = await client.query("SELECT supplier_id FROM suppliers LIMIT 1");
-        const supplierId = supplierRes.rows[0]?.supplier_id;
-
+        // Use provided supplierId
         if (!supplierId) {
-            throw new Error("No suppliers defined in system.");
+            throw new Error("Supplier is required.");
         }
 
         const poRes = await client.query(

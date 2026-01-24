@@ -1,4 +1,4 @@
-import { getAllInventory } from "@/lib/queries";
+import { getAllInventory, getAllSuppliers } from "@/lib/queries";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, AlertTriangle, Package } from "lucide-react";
@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminInventoryPage() {
     const inventory = await getAllInventory();
+    const suppliers = await getAllSuppliers();
 
     return (
         <div className="space-y-6">
@@ -40,6 +41,7 @@ export default async function AdminInventoryPage() {
                                         partId={item.part_id}
                                         partName={item.name}
                                         currentStock={item.quantity_on_hand}
+                                        suppliers={suppliers}
                                     />
                                 </div>
                             </CardHeader>

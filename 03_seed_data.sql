@@ -18,8 +18,6 @@ TRUNCATE TABLE
     users, 
     service_types, 
     suppliers, 
-    service_types, 
-    suppliers, 
     parts,
     service_requirements,
     audit_logs
@@ -27,38 +25,10 @@ RESTART IDENTITY CASCADE;
 
 -- 1. Users
 INSERT INTO users (username, password_hash, role) VALUES
-('admin', 'hash_admin_123', 'ADMIN'),
-('manager_bob', 'hash_bob_456', 'MANAGER'),
-('mechanic_mike', 'hash_mike_789', 'MECHANIC'),
-('mechanic_sarah', 'hash_sarah_000', 'MECHANIC'),
-('receptionist_alice', 'hash_alice_111', 'RECEPTIONIST'),
-('customer_john', 'hash_john_123', 'CUSTOMER'),
-('customer_jane', 'hash_jane_456', 'CUSTOMER'),
-('customer_robert', 'hash_robert_789', 'CUSTOMER')
+('admin', 'hash_admin_123', 'ADMIN')
 ON CONFLICT (username) DO NOTHING;
 
--- 2. Mechanics
-INSERT INTO mechanics (user_id, first_name, last_name, specialty, hourly_rate) VALUES
-((SELECT user_id FROM users WHERE username = 'mechanic_mike'), 'Mike', 'Davidson', 'Engine Repair', 45.00),
-((SELECT user_id FROM users WHERE username = 'mechanic_sarah'), 'Sarah', 'Connor', 'Diagnostics & Electronics', 55.00),
-(NULL, 'Tom', 'Wrench', 'General Maintenance', 40.00);
-
--- 3. Customers
-INSERT INTO customers (user_id, first_name, last_name, email, phone, address) VALUES
-((SELECT user_id FROM users WHERE username = 'customer_john'), 'John', 'Doe', 'john.doe@example.com', '555-0101', '123 Maple St'),
-((SELECT user_id FROM users WHERE username = 'customer_jane'), 'Jane', 'Smith', 'jane.smith@example.com', '555-0102', '456 Oak Ave'),
-((SELECT user_id FROM users WHERE username = 'customer_robert'), 'Robert', 'Brown', 'robert.b@example.com', '555-0103', '789 Pine Ln')
-ON CONFLICT (email) DO NOTHING;
-
--- 4. Vehicles
-INSERT INTO vehicles (customer_id, vin, make, model, year, license_plate, color) VALUES
-((SELECT customer_id FROM customers WHERE email = 'john.doe@example.com'), '1HGCM82633A004352', 'Honda', 'Accord', 2018, 'ABC-1234', 'Silver'),
-((SELECT customer_id FROM customers WHERE email = 'john.doe@example.com'), '1FDXE45233A009988', 'Ford', 'F-150', 2020, 'TRK-9988', 'Blue'),
-((SELECT customer_id FROM customers WHERE email = 'jane.smith@example.com'), 'JT23242333A001122', 'Toyota', 'Camry', 2019, 'XYZ-5678', 'White'),
-((SELECT customer_id FROM customers WHERE email = 'robert.b@example.com'), 'WBA3424233A005544', 'BMW', 'X5', 2021, 'LUX-3344', 'Black')
-ON CONFLICT (vin) DO NOTHING;
-
--- 5. Service Types
+-- 5. Service Types (System Config)
 INSERT INTO service_types (name, description, estimated_hours, base_labor_cost) VALUES
 ('Oil Change', 'Standard oil and filter change', 0.5, 30.00),
 ('Brake Pad Replacement', 'Front or rear brake pads', 1.5, 90.00),
@@ -66,27 +36,11 @@ INSERT INTO service_types (name, description, estimated_hours, base_labor_cost) 
 ('Engine Tune-up', 'Spark plugs, air filter, system check', 2.0, 120.00)
 ON CONFLICT (name) DO NOTHING;
 
--- 6. Suppliers
+-- 6. Suppliers (Needed for Restocking)
 INSERT INTO suppliers (name, contact_person, phone, email) VALUES
 ('AutoParts Warehouse', 'Jim Halpert', '555-9000', 'orders@autopartswarehouse.com'),
-('Global Tyres Inc', 'Pam Beesly', '555-9001', 'sales@globaltyres.com'),
-('Oem Spares Co', 'Dwight Schrute', '555-9002', 'dwight@oemspares.com')
+('Global Tyres Inc', 'Pam Beesly', '555-9001', 'sales@globaltyres.com')
 ON CONFLICT (name) DO NOTHING;
 
--- 7. Parts
-INSERT INTO parts (part_number, name, description, manufacturer, unit_price) VALUES
-('OIL-5W30', '5W-30 Synthetic Oil (1L)', 'High performance synthetic oil', 'Castrol', 12.50),
-('FLT-OIL-001', 'Oil Filter Standard', 'Standard oil filter', 'Bosch', 8.00),
-('BRK-PAD-001', 'Ceramic Brake Pads', 'Front set ceramic pads', 'Brembo', 45.00),
-('SPK-PLG-NGK', 'NGK Iridium Spark Plug', 'Long life spark plug', 'NGK', 15.00),
-('AIR-FLT-009', 'Air Filter', 'High flow air filter', 'K&N', 25.00)
-ON CONFLICT (part_number) DO NOTHING;
-
--- 8. Inventory (Initial Stock)
-INSERT INTO inventory (part_id, quantity_on_hand, reorder_level) VALUES
-((SELECT part_id FROM parts WHERE part_number = 'OIL-5W30'), 100, 20),
-((SELECT part_id FROM parts WHERE part_number = 'FLT-OIL-001'), 50, 10),
-((SELECT part_id FROM parts WHERE part_number = 'BRK-PAD-001'), 20, 5),
-((SELECT part_id FROM parts WHERE part_number = 'SPK-PLG-NGK'), 60, 24),
-    ((SELECT part_id FROM parts WHERE part_number = 'AIR-FLT-009'), 30, 5)
-ON CONFLICT (part_id) DO NOTHING; 
+-- Note: No Parts, Inventory, Customers, Mechanics, or Orders.
+-- Admin must create them manually.

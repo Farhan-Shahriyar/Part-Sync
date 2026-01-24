@@ -6,6 +6,11 @@ export async function getServiceTypes() {
   return res.rows;
 }
 
+export async function getAllSuppliers() {
+  const res = await query('SELECT * FROM suppliers ORDER BY name');
+  return res.rows;
+}
+
 export async function getCustomers() {
   const res = await query('SELECT * FROM customers ORDER BY last_name');
   return res.rows;

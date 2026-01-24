@@ -12,8 +12,6 @@ const navItems = [
     { href: "/admin/mechanics", label: "Mechanics", icon: Wrench },
     { href: "/admin/customers", label: "Customers", icon: Users },
     { href: "/admin/inventory", label: "Inventory", icon: Package },
-    // Data Entry Submenu could be separate, but keeping simple for now
-    { href: "/admin/data-entry/customers", label: "Add Customer", icon: PlusCircle },
 ];
 
 export function AdminNav() {

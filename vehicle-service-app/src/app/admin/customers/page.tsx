@@ -13,12 +13,6 @@ export default async function AdminCustomersPage() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold">Customers</h1>
-                <Link href="/admin/data-entry/customers">
-                    <Button className="gap-2">
-                        <PlusCircle className="w-4 h-4" />
-                        Add Customer
-                    </Button>
-                </Link>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
