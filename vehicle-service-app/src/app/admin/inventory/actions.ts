@@ -3,17 +3,20 @@
 import pool from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-export async function restockInventory(partId: number, quantity: number, unitCost: number, supplierId: number) {
+export async function restockInventory(partId: number, quantity: number, unitCost: number) {
     const client = await pool.connect();
     try {
         await client.query("BEGIN");
 
-        // 1. Create Purchase Order (Automatic for Restock)
-        // Use provided supplierId
+        // 1. Get Supplier from Part
+        const partRes = await client.query("SELECT supplier_id FROM parts WHERE part_id = $1", [partId]);
+        const supplierId = partRes.rows[0]?.supplier_id;
+
         if (!supplierId) {
-            throw new Error("Supplier is required.");
+            throw new Error("Part does not have a linked supplier.");
         }
 
+        // 2. Create Purchase Order
         const poRes = await client.query(
             "INSERT INTO purchase_orders (supplier_id, order_date, status, total_amount) VALUES ($1, NOW(), 'RECEIVED', $2) RETURNING po_id",
             [supplierId, quantity * unitCost]

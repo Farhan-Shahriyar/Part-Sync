@@ -8,21 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 
-export function RestockDialog({ partId, partName, currentStock, suppliers }: { partId: number, partName: string, currentStock: number, suppliers: any[] }) {
+export function RestockDialog({ partId, partName, currentStock }: { partId: number, partName: string, currentStock: number }) {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [quantity, setQuantity] = useState("10");
     const [cost, setCost] = useState("0.00");
-    const [supplierId, setSupplierId] = useState(suppliers[0]?.supplier_id?.toString() || "");
 
     const handleRestock = async () => {
         setLoading(true);
-        if (!supplierId) {
-            alert("Please select a supplier");
-            return;
-        }
         try {
-            const res = await restockInventory(partId, parseInt(quantity), parseFloat(cost), parseInt(supplierId));
+            const res = await restockInventory(partId, parseInt(quantity), parseFloat(cost));
             if (res.success) {
                 setOpen(false);
                 setQuantity("10");
@@ -47,25 +42,11 @@ export function RestockDialog({ partId, partName, currentStock, suppliers }: { p
                         <DialogTitle>Restock {partName}</DialogTitle>
                         <DialogDescription>
                             Add new stock. Current level: {currentStock}
+                            <br />
+                            <span className="text-xs text-muted-foreground">Supplier will be automatically selected from part record.</span>
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="supplier" className="text-right">
-                                Supplier
-                            </Label>
-                            <select
-                                id="supplier"
-                                className="col-span-3 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
-                                value={supplierId}
-                                onChange={(e) => setSupplierId(e.target.value)}
-                            >
-                                <option value="" disabled>Select Supplier...</option>
-                                {suppliers.map(s => (
-                                    <option key={s.supplier_id} value={s.supplier_id}>{s.name}</option>
-                                ))}
-                            </select>
-                        </div>
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="quantity" className="text-right">
                                 Quantity

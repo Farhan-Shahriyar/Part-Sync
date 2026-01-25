@@ -103,6 +103,7 @@ CREATE TABLE parts (
     name VARCHAR(100) NOT NULL,
     description TEXT,
     manufacturer VARCHAR(100),
+    supplier_id INT REFERENCES suppliers(supplier_id), -- Linked supplier
     unit_price DECIMAL(10, 2) NOT NULL CHECK (unit_price >= 0) -- Selling price
 );
 

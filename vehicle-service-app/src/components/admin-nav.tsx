@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Users, Car, Package, Wrench, LayoutDashboard, FileText, PlusCircle } from "lucide-react";
+import { Users, Car, Package, Wrench, LayoutDashboard, FileText, PlusCircle, Box } from "lucide-react";
 import { LogoutButton } from "@/components/logout-button";
 
 const navItems = [
@@ -11,6 +11,7 @@ const navItems = [
     { href: "/admin/orders", label: "Orders", icon: FileText },
     { href: "/admin/mechanics", label: "Mechanics", icon: Wrench },
     { href: "/admin/customers", label: "Customers", icon: Users },
+    { href: "/admin/suppliers", label: "Suppliers", icon: Box },
     { href: "/admin/inventory", label: "Inventory", icon: Package },
 ];
 
