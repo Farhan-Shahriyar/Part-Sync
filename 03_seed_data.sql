@@ -36,11 +36,5 @@ INSERT INTO service_types (name, description, estimated_hours, base_labor_cost) 
 ('Engine Tune-up', 'Spark plugs, air filter, system check', 2.0, 120.00)
 ON CONFLICT (name) DO NOTHING;
 
--- 6. Suppliers (Needed for Restocking)
-INSERT INTO suppliers (name, contact_person, phone, email) VALUES
-('AutoParts Warehouse', 'Jim Halpert', '555-9000', 'orders@autopartswarehouse.com'),
-('Global Tyres Inc', 'Pam Beesly', '555-9001', 'sales@globaltyres.com')
-ON CONFLICT (name) DO NOTHING;
-
 -- Note: No Parts, Inventory, Customers, Mechanics, or Orders.
 -- Admin must create them manually.
