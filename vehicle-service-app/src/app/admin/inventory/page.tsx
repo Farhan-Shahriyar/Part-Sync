@@ -41,7 +41,7 @@ export default async function AdminInventoryPage() {
                                         partId={item.part_id}
                                         partName={item.name}
                                         currentStock={item.quantity_on_hand}
-                                        suppliers={suppliers}
+                                        unitPrice={parseFloat(item.unit_price)}
                                     />
                                 </div>
                             </CardHeader>

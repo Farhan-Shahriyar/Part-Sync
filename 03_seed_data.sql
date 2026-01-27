@@ -25,7 +25,7 @@ RESTART IDENTITY CASCADE;
 
 -- 1. Users
 INSERT INTO users (username, password_hash, role) VALUES
-('admin', 'admin', 'ADMIN')
+('admin', 'hash_admin_123', 'ADMIN')
 ON CONFLICT (username) DO NOTHING;
 
 -- 2. Suppliers

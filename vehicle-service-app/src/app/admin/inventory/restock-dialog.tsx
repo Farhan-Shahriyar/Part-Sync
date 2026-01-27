@@ -8,20 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 
-export function RestockDialog({ partId, partName, currentStock }: { partId: number, partName: string, currentStock: number }) {
+export function RestockDialog({ partId, partName, currentStock, unitPrice }: { partId: number, partName: string, currentStock: number, unitPrice: number }) {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [quantity, setQuantity] = useState("10");
-    const [cost, setCost] = useState("0.00");
 
     const handleRestock = async () => {
         setLoading(true);
         try {
-            const res = await restockInventory(partId, parseInt(quantity), parseFloat(cost));
+            const res = await restockInventory(partId, parseInt(quantity));
             if (res.success) {
                 setOpen(false);
                 setQuantity("10");
-                setCost("0.00");
             } else {
                 alert(res.error);
             }
@@ -66,10 +64,10 @@ export function RestockDialog({ partId, partName, currentStock }: { partId: numb
                             <Input
                                 id="cost"
                                 type="number"
-                                step="0.01"
-                                value={cost}
-                                onChange={(e) => setCost(e.target.value)}
-                                className="col-span-3"
+                                value={unitPrice}
+                                disabled
+                                className="col-span-3 bg-muted"
+                                title="Fixed based on Part Price"
                             />
                         </div>
                     </div>

@@ -23,8 +23,9 @@ export function BookingForm({ vehicles, serviceTypes, customerId }: { vehicles: 
                 }} className="space-y-6">
 
                     <div className="space-y-2">
-                        <Label htmlFor="vehicleId" className="flex items-center gap-2">
-                            <Car className="w-4 h-4 text-primary" /> Vehicle
+                        <Label htmlFor="vehicleId" className="flex items-center justify-between">
+                            <span className="flex items-center gap-2"><Car className="w-4 h-4 text-primary" /> Vehicle</span>
+                            <a href="/customer/vehicles/add" className="text-xs text-primary hover:underline">Add New Vehicle</a>
                         </Label>
                         <select
                             name="vehicleId"
@@ -52,10 +53,13 @@ export function BookingForm({ vehicles, serviceTypes, customerId }: { vehicles: 
                             <option value="" className="bg-background">Select Service</option>
                             {serviceTypes.map((s) => (
                                 <option key={s.service_type_id} value={s.service_type_id} className="bg-background">
-                                    {s.name} (${s.base_labor_cost})
+                                    {s.name} - ${s.base_labor_cost} (Est. {s.estimated_hours} hrs)
                                 </option>
                             ))}
                         </select>
+                        <p className="text-xs text-muted-foreground">
+                            * Note: Additional mechanic charges may apply at $20/hr based on actual labor time.
+                        </p>
                     </div>
 
                     <div className="space-y-2">
