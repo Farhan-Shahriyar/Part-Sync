@@ -35,11 +35,11 @@ INSERT INTO suppliers (name, contact_person, phone, email) VALUES
 
 -- 3. Service Types
 INSERT INTO service_types (name, description, estimated_hours, base_labor_cost) VALUES
-('Oil Change Service', 'Full oil change', 0.5, 30.00),
-('Brake Service', 'Brake pads and rotors', 2.0, 100.00),
-('Tire Service', 'Tire replacement and balancing', 1.0, 50.00),
-('Battery Replacement', 'Battery swap and terminal cleaning', 0.5, 25.00),
-('Engine Tune-Up', 'Spark plugs and filters', 1.5, 80.00);
+('Oil Change Service', 'Full oil change', 0.5, 56.00),
+('Brake Service', 'Brake pads and rotors', 2.0, 262.00),
+('Tire Service', 'Tire replacement and balancing', 1.0, 526.00),
+('Battery Replacement', 'Battery swap and terminal cleaning', 0.5, 208.00),
+('Engine Tune-Up', 'Spark plugs and filters', 1.5, 108.00);
 
 -- 4. Parts
 -- Supplier 1 (AutoParts Warehouse): Engine, Battery

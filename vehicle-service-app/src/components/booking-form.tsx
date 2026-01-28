@@ -57,9 +57,6 @@ export function BookingForm({ vehicles, serviceTypes, customerId }: { vehicles: 
                                 </option>
                             ))}
                         </select>
-                        <p className="text-xs text-muted-foreground">
-                            * Note: Additional mechanic charges may apply at $20/hr based on actual labor time.
-                        </p>
                     </div>
 
                     <div className="space-y-2">

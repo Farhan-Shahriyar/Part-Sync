@@ -64,11 +64,11 @@ export async function completeJob(jobId: number, serviceTypeId: number) {
 
             partsCost += parseFloat(stock.unit_price) * req.quantity;
 
-            // Update Inventory
-            await client.query(
-                "UPDATE inventory SET quantity_on_hand = quantity_on_hand - $1 WHERE part_id = $2",
-                [req.quantity, req.part_id]
-            );
+            // Update Inventory - REMOVED: Trigger trg_deduct_inventory handles this automatically on parts_used insert.
+            // await client.query(
+            //    "UPDATE inventory SET quantity_on_hand = quantity_on_hand - $1 WHERE part_id = $2",
+            //    [req.quantity, req.part_id]
+            // );
 
             // Record Usage
             await client.query(
