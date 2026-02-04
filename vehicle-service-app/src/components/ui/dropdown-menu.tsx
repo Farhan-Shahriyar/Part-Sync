@@ -33,8 +33,8 @@ export function DropdownMenuTrigger({ asChild, children, open, setOpen }: any) {
 export function DropdownMenuContent({ align, children, open }: any) {
     if (!open) return null;
     return (
-        <div className={`absolute ${align === 'end' ? 'right-0' : 'left-0'} z-50 mt-2 w-56 origin-top-right rounded-md bg-popover text-popover-foreground shadow-md border animate-in fade-in zoom-in-95`}>
-            <div className="p-1">
+        <div className={`absolute ${align === 'end' ? 'right-0' : 'left-0'} z-50 pt-2 w-56 origin-top-right animate-in fade-in zoom-in-95`}>
+            <div className="rounded-md bg-popover text-popover-foreground shadow-md border p-1">
                 {children}
             </div>
         </div>
