@@ -73,25 +73,30 @@ $$;
 -- ---------------------------------------------
 
 -- Procedure 1: Create Service Booking
--- Creates an order and the initial job
+-- Creates an order and multiple jobs
 CREATE OR REPLACE PROCEDURE sp_create_booking(
     p_customer_id INT,
     p_vehicle_id INT,
-    p_service_type_id INT,
+    p_service_type_ids INT[],
     p_expected_date TIMESTAMPTZ,
     INOUT p_new_order_id INT DEFAULT NULL
 )
 LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_service_id INT;
 BEGIN
     -- Insert Header
     INSERT INTO service_orders (customer_id, vehicle_id, expected_completion, status)
     VALUES (p_customer_id, p_vehicle_id, p_expected_date, 'PENDING')
     RETURNING order_id INTO p_new_order_id;
     
-    -- Create Initial Job
-    INSERT INTO service_jobs (order_id, service_type_id, status)
-    VALUES (p_new_order_id, p_service_type_id, 'PENDING');
+    -- Create Jobs for each selected service
+    FOREACH v_service_id IN ARRAY p_service_type_ids
+    LOOP
+        INSERT INTO service_jobs (order_id, service_type_id, status)
+        VALUES (p_new_order_id, v_service_id, 'PENDING');
+    END LOOP;
     
     COMMIT;
 END;

@@ -26,8 +26,12 @@ export async function createBooking(formData: FormData) {
     }
 
     const vehicleId = formData.get('vehicleId');
-    const serviceTypeId = formData.get('serviceTypeId');
+    const serviceTypeIds = formData.getAll('serviceTypeIds').map(id => parseInt(id as string, 10));
     const date = formData.get('date');
+
+    if (!serviceTypeIds || serviceTypeIds.length === 0) {
+        return { error: 'Please select at least one service' };
+    }
 
     // Call the stored procedure
     // Note: Procedures are called with CALL. INOUT params are tricky in node-postgres simple query. 
@@ -41,8 +45,8 @@ export async function createBooking(formData: FormData) {
 
     try {
         const result = await query(
-            'CALL sp_create_booking($1::int, $2::int, $3::int, $4::timestamptz, NULL)',
-            [customerId, vehicleId, serviceTypeId, date]
+            'CALL sp_create_booking($1::int, $2::int, $3::int[], $4::timestamptz, NULL)',
+            [customerId, vehicleId, serviceTypeIds, date]
         );
 
         // After CALL, the result usually contains the INOUT param as a row if supported, 

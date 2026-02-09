@@ -42,21 +42,27 @@ export function BookingForm({ vehicles, serviceTypes, customerId }: { vehicles: 
                         </select>
                     </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="serviceTypeId">Service Type</Label>
-                        <select
-                            name="serviceTypeId"
-                            id="serviceTypeId"
-                            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-ring focus:outline-none"
-                            required
-                        >
-                            <option value="" className="bg-background">Select Service</option>
+                    <div className="space-y-3">
+                        <Label>Service Types</Label>
+                        <div className="grid gap-2 p-4 border rounded-md bg-muted/20">
                             {serviceTypes.map((s) => (
-                                <option key={s.service_type_id} value={s.service_type_id} className="bg-background">
-                                    {s.name} - ${s.base_labor_cost} (Est. {s.estimated_hours} hrs)
-                                </option>
+                                <div key={s.service_type_id} className="flex items-center space-x-2">
+                                    <input
+                                        type="checkbox"
+                                        id={`service-${s.service_type_id}`}
+                                        name="serviceTypeIds"
+                                        value={s.service_type_id}
+                                        className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                                    />
+                                    <label
+                                        htmlFor={`service-${s.service_type_id}`}
+                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        {s.name} - ${s.base_labor_cost} <span className="text-muted-foreground text-xs font-normal">(Est. {s.estimated_hours} hrs)</span>
+                                    </label>
+                                </div>
                             ))}
-                        </select>
+                        </div>
                     </div>
 
                     <div className="space-y-2">
