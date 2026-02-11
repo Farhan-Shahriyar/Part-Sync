@@ -114,7 +114,8 @@ CREATE TABLE inventory (
     part_id INT NOT NULL UNIQUE REFERENCES parts(part_id),
     quantity_on_hand INT NOT NULL DEFAULT 0 CHECK (quantity_on_hand >= 0),
     reorder_level INT NOT NULL DEFAULT 10,
-    last_restocked_at TIMESTAMPTZ
+    last_restocked_at TIMESTAMPTZ,
+    auto_restock BOOLEAN DEFAULT FALSE
 );
 
 -- 9b. Service Requirements (BOM - Bill of Materials for Services)

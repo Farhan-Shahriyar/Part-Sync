@@ -199,7 +199,7 @@ export async function getAllInventory() {
   // Fix supplier join logic if needed, strictly speaking inventory doesn't link to supplier directly in schema, 
   // only via POs. For now showing part details is primary.
   const simpleRes = await query(`
-    SELECT i.*, p.name, p.part_number, p.unit_price, p.manufacturer
+    SELECT i.*, p.name, p.part_number, p.unit_price, p.manufacturer, i.auto_restock
     FROM inventory i
     JOIN parts p ON i.part_id = p.part_id
     ORDER BY p.name

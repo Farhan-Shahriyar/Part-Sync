@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle, AlertTriangle, Package } from "lucide-react";
 import Link from "next/link";
 import { RestockDialog } from "./restock-dialog";
+import { AutoRestockSwitch } from "./auto-restock-switch";
 
 export const dynamic = 'force-dynamic';
 
@@ -59,6 +60,10 @@ export default async function AdminInventoryPage() {
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Unit Price:</span>
                                     <span>${item.unit_price}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm pt-2 border-t">
+                                    <span className="text-muted-foreground">Auto-Restock:</span>
+                                    <AutoRestockSwitch partId={item.part_id} initialState={item.auto_restock || false} />
                                 </div>
                                 <div className="text-xs text-muted-foreground pt-2 border-t">
                                     Manufacturer: {item.manufacturer || 'N/A'}

@@ -172,6 +172,9 @@ CREATE OR REPLACE FUNCTION trg_fn_deduct_inventory()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_supplier_id INT;
+    v_new_po_id INT;
 BEGIN
     -- Check if enough stock exists
     IF (SELECT quantity_on_hand FROM inventory WHERE part_id = NEW.part_id) < NEW.quantity THEN
@@ -182,6 +185,34 @@ BEGIN
     UPDATE inventory
     SET quantity_on_hand = quantity_on_hand - NEW.quantity
     WHERE part_id = NEW.part_id;
+    
+    -- Auto-Restock Logic
+    IF EXISTS (
+        SELECT 1 FROM inventory 
+        WHERE part_id = NEW.part_id 
+        AND auto_restock = TRUE 
+        AND quantity_on_hand <= reorder_level
+    ) THEN
+        -- Get supplier for the part
+        SELECT supplier_id INTO v_supplier_id FROM parts WHERE part_id = NEW.part_id;
+        
+        -- Create a new PO if supplier exists
+        IF v_supplier_id IS NOT NULL THEN
+            INSERT INTO purchase_orders (supplier_id, status)
+            VALUES (v_supplier_id, 'RECEIVED')
+            RETURNING po_id INTO v_new_po_id;
+            
+            -- Insert PO item (Restock quantity of 20 for MVP)
+            INSERT INTO po_items (po_id, part_id, quantity, unit_cost)
+            VALUES (v_new_po_id, NEW.part_id, 20, (SELECT unit_price FROM parts WHERE part_id = NEW.part_id) * 0.7); -- Assume cost is 70% of sell price
+            
+            -- Automatically receive the stock
+            UPDATE inventory
+            SET quantity_on_hand = quantity_on_hand + 20,
+                last_restocked_at = CURRENT_TIMESTAMP
+            WHERE part_id = NEW.part_id;
+        END IF;
+    END IF;
     
     RETURN NEW;
 END;
