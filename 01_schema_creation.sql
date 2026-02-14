@@ -146,6 +146,8 @@ CREATE TABLE service_jobs (
     mechanic_id INT REFERENCES mechanics(mechanic_id), -- Nullable initially
     status VARCHAR(20) DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'HALTED')),
     notes JSONB, -- JSON column for mechanic notes as requested
+    started_at TIMESTAMPTZ,
+    completed_at TIMESTAMPTZ,
     actual_labor_hours DECIMAL(4, 2),
     labor_cost DECIMAL(10, 2) DEFAULT 0.00
 );

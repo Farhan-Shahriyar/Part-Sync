@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wrench, Clock, AlertTriangle, CheckCircle } from "lucide-react";
+import { Wrench, Clock, AlertTriangle, CheckCircle, Timer } from "lucide-react";
 import { startJob, completeJob } from "./actions";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -18,7 +18,40 @@ type Job = {
     order_date: string;
     customer_name: string;
     service_type_id: number;
+    started_at?: string;
 };
+
+function LiveTimer({ startedAt }: { startedAt: string }) {
+    const [elapsed, setElapsed] = useState("");
+
+    useEffect(() => {
+        const start = new Date(startedAt).getTime();
+
+        const updateTimer = () => {
+            const now = Date.now();
+            const diffMs = now - start;
+
+            const hours = Math.floor(diffMs / (1000 * 60 * 60));
+            const mins = Math.floor((diffMs / (1000 * 60)) % 60);
+            const secs = Math.floor((diffMs / 1000) % 60);
+
+            setElapsed(
+                `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+            );
+        };
+
+        updateTimer();
+        const interval = setInterval(updateTimer, 1000);
+        return () => clearInterval(interval);
+    }, [startedAt]);
+
+    return (
+        <div className="flex items-center gap-1 text-sm font-mono font-medium text-amber-600 bg-amber-100 px-2 py-1 rounded">
+            <Timer className="w-4 h-4" />
+            {elapsed}
+        </div>
+    );
+}
 
 type Requirement = {
     name: string;
@@ -73,7 +106,12 @@ export function JobCard({ job, requirements }: { job: Job, requirements: Require
                             <CardTitle className="text-lg">{job.service_name}</CardTitle>
                             <p className="text-sm text-orange-500 font-medium">Order #{job.order_id}</p>
                         </div>
-                        <StatusBadge />
+                        <div className="flex flex-col items-end gap-2">
+                            <StatusBadge />
+                            {job.status === 'IN_PROGRESS' && job.started_at && (
+                                <LiveTimer startedAt={job.started_at} />
+                            )}
+                        </div>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-3">

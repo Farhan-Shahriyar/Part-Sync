@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 export async function startJob(jobId: number) {
     try {
         await pool.query(
-            "UPDATE service_jobs SET status = 'IN_PROGRESS' WHERE job_id = $1",
+            "UPDATE service_jobs SET status = 'IN_PROGRESS', started_at = NOW() WHERE job_id = $1",
             [jobId]
         );
         revalidatePath("/mechanic");
@@ -23,20 +23,28 @@ export async function completeJob(jobId: number, serviceTypeId: number) {
     try {
         await client.query("BEGIN");
 
-        // 1. Get Job Info (Mechanic Rate) and labor hours (assuming 1 hour if not set)
+        // 1. Get Job Info to calculate actual labor and Cost
         const jobRes = await client.query(`
-            SELECT sj.order_id, m.hourly_rate 
+            SELECT sj.order_id, m.hourly_rate, sj.started_at
             FROM service_jobs sj 
             LEFT JOIN mechanics m ON sj.mechanic_id = m.mechanic_id 
             WHERE sj.job_id = $1
         `, [jobId]);
-        const { order_id, hourly_rate } = jobRes.rows[0];
-        const laborCost = parseFloat(hourly_rate || 0) * 1.0; // Defaulting to 1 hour for MVP
+        const { order_id, hourly_rate, started_at } = jobRes.rows[0];
+
+        // Ensure started_at is present, fallback to 1 hour ago just in case
+        const startTime = started_at ? new Date(started_at) : new Date(Date.now() - 3600000);
+        const diffMs = Date.now() - startTime.getTime();
+        const diffHours = diffMs / (1000 * 60 * 60);
+
+        // Calculate labor cost (min 1 hour)
+        const actualLaborHours = Math.max(1.0, parseFloat(diffHours.toFixed(2)));
+        const laborCost = parseFloat(hourly_rate || 0) * actualLaborHours;
 
         // 2. Update Job Status & Cost
         await client.query(
-            "UPDATE service_jobs SET status = 'COMPLETED', actual_labor_hours = 1.0, labor_cost = $2 WHERE job_id = $1",
-            [jobId, laborCost]
+            "UPDATE service_jobs SET status = 'COMPLETED', completed_at = NOW(), actual_labor_hours = $2, labor_cost = $3 WHERE job_id = $1",
+            [jobId, actualLaborHours, laborCost]
         );
 
         // 3. Get Requirements & Calculate Parts Cost
