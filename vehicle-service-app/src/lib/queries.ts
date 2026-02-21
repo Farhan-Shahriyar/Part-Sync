@@ -50,6 +50,23 @@ export async function getMechanicJobsByUserId(userId: number) {
   return res.rows;
 }
 
+export async function getMechanicCompletedJobsByUserId(userId: number) {
+  const res = await query(`
+      SELECT sj.*, so.order_date, c.first_name || ' ' || c.last_name as customer_name, st.name as service_name, v.make, v.model, v.license_plate 
+      FROM service_jobs sj
+      JOIN mechanics m ON sj.mechanic_id = m.mechanic_id
+      JOIN service_orders so ON sj.order_id = so.order_id
+      JOIN vehicles v ON so.vehicle_id = v.vehicle_id
+      JOIN customers c ON so.customer_id = c.customer_id
+      JOIN service_types st ON sj.service_type_id = st.service_type_id
+      WHERE m.user_id = $1 AND sj.status = 'COMPLETED'
+      -- Since we just added completed_at, some old jobs might not have it. Fallback to order_date
+      ORDER BY COALESCE(sj.completed_at, so.order_date) DESC
+      LIMIT 20
+    `, [userId]);
+  return res.rows;
+}
+
 
 export async function getServiceRequirements(serviceTypeId: number) {
   const res = await query(`

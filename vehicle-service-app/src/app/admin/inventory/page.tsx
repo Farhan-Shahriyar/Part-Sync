@@ -65,9 +65,9 @@ export default async function AdminInventoryPage() {
                                     <span className="text-muted-foreground">Auto-Restock:</span>
                                     <AutoRestockSwitch partId={item.part_id} initialState={item.auto_restock || false} />
                                 </div>
-                                <div className="text-xs text-muted-foreground pt-2 border-t">
+                                {/* <div className="text-xs text-muted-foreground pt-2 border-t">
                                     Manufacturer: {item.manufacturer || 'N/A'}
-                                </div>
+                                </div> */}
                             </CardContent>
                         </Card>
                     );

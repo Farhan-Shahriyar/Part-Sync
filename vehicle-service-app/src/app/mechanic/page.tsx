@@ -1,4 +1,4 @@
-import { getMechanicJobsByUserId, getServiceRequirements } from "@/lib/queries"; // Updated import
+import { getMechanicJobsByUserId, getMechanicCompletedJobsByUserId, getServiceRequirements } from "@/lib/queries"; // Updated import
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { JobCard } from "./job-card";
@@ -13,8 +13,9 @@ export default async function MechanicPage() {
     }
 
     const jobs = await getMechanicJobsByUserId(session.user_id);
+    const completedJobs = await getMechanicCompletedJobsByUserId(session.user_id);
 
-    // Fetch requirements for each job
+    // Fetch requirements for each active job
     const jobsWithReqs = await Promise.all(jobs.map(async (job: any) => {
         const requirements = await getServiceRequirements(job.service_type_id);
         return { ...job, requirements };
@@ -30,13 +31,28 @@ export default async function MechanicPage() {
                 <LogoutButton />
             </header>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {jobsWithReqs.length === 0 && (
-                    <p className="text-muted-foreground col-span-full">No active jobs assigned.</p>
-                )}
-                {jobsWithReqs.map((job) => (
-                    <JobCard key={job.job_id} job={job} requirements={job.requirements} />
-                ))}
+            <div className="mb-12">
+                <h2 className="text-xl font-semibold mb-4 text-orange-600 border-b pb-2">Active Jobs</h2>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {jobsWithReqs.length === 0 && (
+                        <p className="text-muted-foreground col-span-full">No active jobs assigned.</p>
+                    )}
+                    {jobsWithReqs.map((job) => (
+                        <JobCard key={job.job_id} job={job} requirements={job.requirements} />
+                    ))}
+                </div>
+            </div>
+
+            <div>
+                <h2 className="text-xl font-semibold mb-4 text-green-600 border-b pb-2">Recently Completed Jobs</h2>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    {completedJobs.length === 0 && (
+                        <p className="text-muted-foreground col-span-full">No completed jobs yet.</p>
+                    )}
+                    {completedJobs.map((job) => (
+                        <JobCard key={`completed-${job.job_id}`} job={job} requirements={[]} />
+                    ))}
+                </div>
             </div>
         </div>
     );
