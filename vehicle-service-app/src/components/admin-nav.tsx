@@ -19,7 +19,7 @@ export function AdminNav() {
     const pathname = usePathname();
 
     return (
-        <nav className="flex flex-col gap-2">
+        <nav className="flex flex-col gap-3">
             {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -28,17 +28,19 @@ export function AdminNav() {
                         key={item.href}
                         href={item.href}
                         className={cn(
-                            "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-white/10",
-                            isActive ? "bg-primary/20 text-primary border border-primary/20" : "text-muted-foreground"
+                            "flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all group border border-transparent",
+                            isActive
+                                ? "bg-primary/10 text-primary shadow-[inset_2px_0_0_rgba(255,215,0,1)] border-white/5"
+                                : "text-zinc-400 hover:text-white hover:bg-white/5"
                         )}
                     >
-                        <Icon className="w-4 h-4" />
-                        {item.label}
+                        <Icon className={cn("w-4 h-4", isActive ? "text-primary flex-shrink-0" : "text-zinc-500 group-hover:text-zinc-300 flex-shrink-0")} />
+                        <span className="tracking-wide">{item.label}</span>
                     </Link>
                 );
             })}
 
-            <div className="mt-auto pt-4 border-t border-border">
+            <div className="mt-8 pt-6 border-t border-white/10">
                 <LogoutButton />
             </div>
         </nav>

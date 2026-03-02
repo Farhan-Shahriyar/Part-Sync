@@ -23,16 +23,17 @@ export default async function CustomerDashboard() {
 
     return (
         <div className="min-h-screen bg-background p-8 space-y-8">
-            <header className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">
-                        My Garage
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-black/20 p-8 rounded-xl border border-white/5 backdrop-blur-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -z-10" />
+                <div className="relative z-10">
+                    <h1 className="text-4xl font-light tracking-widest text-white uppercase mb-1">
+                        My <span className="font-semibold text-primary">Garage</span>
                     </h1>
-                    <p className="text-muted-foreground">Welcome, {customer.first_name} {customer.last_name}</p>
+                    <p className="text-zinc-400 font-light tracking-wide">Welcome, {customer.first_name} {customer.last_name}</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-3 relative z-10 mt-4 md:mt-0">
                     <Link href="/customer/book">
-                        <Button className="bg-gradient-to-r from-orange-500 to-rose-500 text-white font-bold hover:shadow-lg transition-shadow">
+                        <Button className="bg-primary hover:bg-primary/80 text-primary-foreground font-bold tracking-wider uppercase rounded-sm shadow-[0_0_15px_rgba(255,215,0,0.15)] transition-all h-10 px-6">
                             <Plus className="w-4 h-4 mr-2" /> Book Service
                         </Button>
                     </Link>
@@ -41,21 +42,23 @@ export default async function CustomerDashboard() {
             </header>
 
             {/* Vehicles Section */}
-            <section className="space-y-4">
-                <div className="flex items-center gap-2 text-xl font-semibold">
-                    <Car className="w-5 h-5 text-orange-500" />
-                    <h2>My Vehicles</h2>
+            <section className="space-y-6">
+                <div className="flex items-center gap-3 border-b border-white/5 pb-2">
+                    <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+                        <Car className="w-4 h-4 text-primary" />
+                    </div>
+                    <h2 className="text-2xl font-light tracking-wide text-white">Registered <span className="font-medium text-primary">Vehicles</span></h2>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {vehicles.length === 0 && <p className="text-muted-foreground">No vehicles registered.</p>}
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {vehicles.length === 0 && <p className="text-zinc-500 font-light">No vehicles registered.</p>}
                     {vehicles.map((v: any) => (
-                        <Card key={v.vehicle_id} className="border-l-4 border-l-orange-400">
-                            <CardHeader>
-                                <CardTitle>{v.year} {v.make} {v.model}</CardTitle>
-                                <CardDescription>{v.license_plate}</CardDescription>
+                        <Card key={v.vehicle_id} className="glass border-white/5 bg-black/40 hover:bg-white/5 transition-colors group">
+                            <CardHeader className="pb-2">
+                                <CardTitle className="text-lg text-white font-medium">{v.year} {v.make} {v.model}</CardTitle>
+                                <CardDescription className="text-primary font-mono mt-1 tracking-widest">{v.license_plate}</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-sm px-2 py-1 bg-secondary rounded inline-block text-secondary-foreground">
+                                <div className="text-xs px-2 py-1 bg-white/10 rounded inline-block text-zinc-300 tracking-wider uppercase mt-2">
                                     {v.color}
                                 </div>
                             </CardContent>
@@ -65,29 +68,37 @@ export default async function CustomerDashboard() {
             </section>
 
             {/* Active Bookings */}
-            <section className="space-y-4">
-                <div className="flex items-center gap-2 text-xl font-semibold">
-                    <Calendar className="w-5 h-5 text-rose-500" />
-                    <h2>Active Bookings</h2>
+            <section className="space-y-6">
+                <div className="flex items-center gap-3 border-b border-white/5 pb-2">
+                    <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+                        <Calendar className="w-4 h-4 text-primary" />
+                    </div>
+                    <h2 className="text-2xl font-light tracking-wide text-white">Service <span className="font-medium text-primary">Appointments</span></h2>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                    {bookings.length === 0 && <p className="text-muted-foreground">No active service bookings.</p>}
+                <div className="grid gap-6 md:grid-cols-2">
+                    {bookings.length === 0 && <p className="text-zinc-500 font-light">No active service appointments.</p>}
                     {bookings.map((b: any) => (
-                        <Card key={b.order_id} className="border-l-4 border-l-rose-500">
-                            <CardHeader>
-                                <div className="flex justify-between">
-                                    <CardTitle>Service Order #{b.order_id}</CardTitle>
-                                    <span className="text-rose-500 font-bold text-sm bg-rose-100 px-2 py-1 rounded">
+                        <Card key={b.order_id} className="glass border-white/5 bg-black/40 hover:bg-white/5 transition-colors group">
+                            <CardHeader className="pb-2">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <CardTitle className="text-lg text-white font-medium">Service Order</CardTitle>
+                                        <CardDescription className="text-primary font-mono mt-1 tracking-widest">#{b.order_id}</CardDescription>
+                                    </div>
+                                    <span className="text-primary text-[10px] uppercase font-bold tracking-widest bg-primary/10 px-2 py-1 rounded border border-primary/20">
                                         {b.status}
                                     </span>
                                 </div>
-                                <CardDescription>
-                                    {new Date(b.order_date).toLocaleDateString()}
-                                </CardDescription>
                             </CardHeader>
-                            <CardContent>
-                                <p className="font-medium">{b.make} {b.model}</p>
-                                <p className="text-sm text-muted-foreground">Expected: {b.expected_completion ? new Date(b.expected_completion).toLocaleDateString() : 'TBD'}</p>
+                            <CardContent className="space-y-3 pt-2 text-sm text-zinc-300">
+                                <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                                    <span className="text-zinc-500 font-light">Vehicle</span>
+                                    <span className="font-semibold">{b.make} {b.model}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-zinc-500 font-light">Expected Return</span>
+                                    <span>{b.expected_completion ? new Date(b.expected_completion).toLocaleDateString() : 'TBD'}</span>
+                                </div>
                             </CardContent>
                         </Card>
                     ))}
@@ -95,37 +106,41 @@ export default async function CustomerDashboard() {
             </section>
 
             {/* History */}
-            <section className="space-y-4">
-                <div className="flex items-center gap-2 text-xl font-semibold">
-                    <History className="w-5 h-5 text-amber-500" />
-                    <h2>Service History</h2>
+            <section className="space-y-6">
+                <div className="flex items-center gap-3 border-b border-white/5 pb-2">
+                    <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+                        <History className="w-4 h-4 text-primary" />
+                    </div>
+                    <h2 className="text-2xl font-light tracking-wide text-white">Service <span className="font-medium text-primary">History</span></h2>
                 </div>
-                <Card>
+                <Card className="glass border-white/5 bg-black/40 overflow-hidden">
                     <CardContent className="p-0">
-                        <table className="w-full text-sm text-left">
-                            <thead className="text-xs text-muted-foreground uppercase bg-muted/50">
+                        <table className="w-full text-sm text-left text-zinc-300">
+                            <thead className="text-xs text-white uppercase tracking-widest bg-white/5 border-b border-white/10">
                                 <tr>
-                                    <th className="px-6 py-3">Date</th>
-                                    <th className="px-6 py-3">Vehicle</th>
-                                    <th className="px-6 py-3">Service</th>
-                                    <th className="px-6 py-3 text-right">Cost</th>
-                                    <th className="px-6 py-3 text-right">Status</th>
+                                    <th className="px-6 py-4 font-medium">Date</th>
+                                    <th className="px-6 py-4 font-medium">Vehicle</th>
+                                    <th className="px-6 py-4 font-medium">Service Info</th>
+                                    <th className="px-6 py-4 text-right font-medium">Total Cost</th>
+                                    <th className="px-6 py-4 text-right font-medium">Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="divide-y divide-white/5">
                                 {history.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-4 text-center text-muted-foreground">No past service history.</td>
+                                        <td colSpan={5} className="px-6 py-8 text-center text-zinc-500 font-light">No documented service history found.</td>
                                     </tr>
                                 )}
                                 {history.map((h: any) => (
-                                    <tr key={h.order_id} className="border-b border-border last:border-0 hover:bg-muted/30">
-                                        <td className="px-6 py-4">{new Date(h.order_date).toLocaleDateString()}</td>
-                                        <td className="px-6 py-4 font-medium">{h.make} {h.model}</td>
-                                        <td className="px-6 py-4">{h.service_name || 'Service Order'}</td>
-                                        <td className="px-6 py-4 text-right">${h.total_amount}</td>
+                                    <tr key={h.order_id} className="hover:bg-white/5 transition-colors group">
+                                        <td className="px-6 py-4 whitespace-nowrap">{new Date(h.order_date).toLocaleDateString()}</td>
+                                        <td className="px-6 py-4 font-medium text-white">{h.make} {h.model}</td>
+                                        <td className="px-6 py-4 text-zinc-400">{h.service_name || 'Service Order'} <span className="text-xs text-zinc-600 block">#{h.order_id}</span></td>
+                                        <td className="px-6 py-4 text-right text-primary font-medium tracking-wider">
+                                            {h.total_amount ? `$${h.total_amount}` : '-'}
+                                        </td>
                                         <td className="px-6 py-4 text-right">
-                                            <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">
+                                            <span className="text-[10px] uppercase font-bold tracking-widest bg-zinc-800 text-zinc-300 px-2 py-1 rounded border border-zinc-700">
                                                 {h.status}
                                             </span>
                                         </td>

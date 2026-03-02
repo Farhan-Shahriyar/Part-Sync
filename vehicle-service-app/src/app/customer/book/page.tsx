@@ -19,11 +19,12 @@ export default async function BookingPage() {
     }
 
     return (
-        <div className="min-h-screen bg-background p-8 flex items-center justify-center">
-            <div className="w-full">
-                <div className="mb-8 text-center">
-                    <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">New Service Booking</h1>
-                    <p className="text-muted-foreground">Schedule a service for one of your vehicles.</p>
+        <div className="min-h-screen bg-background p-8 flex items-center justify-center font-sans selection:bg-primary/30 relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[100px] -z-10" />
+            <div className="w-full max-w-2xl relative z-10">
+                <div className="mb-10 text-center space-y-2">
+                    <h1 className="text-4xl font-light tracking-wide text-white uppercase">Schedule <span className="font-semibold text-primary">Service</span></h1>
+                    <p className="text-zinc-400 font-light tracking-wide">Request an appointment for maintenance or repairs.</p>
                 </div>
                 <BookingForm
                     vehicles={stats.vehicles}

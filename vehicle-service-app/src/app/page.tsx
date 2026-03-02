@@ -17,11 +17,11 @@ export default function LandingPage() {
         </div>
         <div className="flex items-center gap-6">
           <Link href="/login" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors uppercase tracking-wider">
-            Client Login
+            Login
           </Link>
           <Link href="/register">
             <Button className="bg-primary hover:bg-primary/80 text-primary-foreground font-bold tracking-wider uppercase rounded-none px-6 shadow-[0_0_10px_rgba(255,215,0,0.15)] transition-all">
-              Reserve Service
+              Join Us
             </Button>
           </Link>
         </div>

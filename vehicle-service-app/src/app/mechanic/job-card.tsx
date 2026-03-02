@@ -60,7 +60,7 @@ type Requirement = {
     quantity_on_hand: number;
 };
 
-export function JobCard({ job, requirements }: { job: Job, requirements: Requirement[] }) {
+export function JobCard({ job, requirements = [], isActive = true }: { job: Job, requirements?: Requirement[], isActive?: boolean }) {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [completeOpen, setCompleteOpen] = useState(false);
@@ -89,9 +89,9 @@ export function JobCard({ job, requirements }: { job: Job, requirements: Require
     };
 
     const StatusBadge = () => (
-        <span className={`px-2 py-1 rounded text-xs font-bold ${job.status === 'IN_PROGRESS' ? 'bg-amber-500/20 text-amber-700' :
-            job.status === 'COMPLETED' ? 'bg-green-500/20 text-green-700' :
-                'bg-orange-500/20 text-orange-600'
+        <span className={`px-2 py-1 rounded text-[10px] uppercase tracking-widest font-bold border ${job.status === 'IN_PROGRESS' ? 'bg-primary/10 text-primary border-primary/30' :
+            job.status === 'COMPLETED' ? 'bg-zinc-800 text-zinc-300 border-zinc-700' :
+                'bg-white/5 text-white border-white/20'
             }`}>
             {job.status}
         </span>
@@ -99,12 +99,12 @@ export function JobCard({ job, requirements }: { job: Job, requirements: Require
 
     return (
         <>
-            <Card className="border-l-4 border-l-orange-500 hover:shadow-lg transition-shadow">
-                <CardHeader>
+            <Card className={`glass overflow-hidden border-white/5 transition-all hover:bg-white/5 bg-black/40 ${isActive ? 'border-l-4 border-l-primary/50' : 'opacity-70 grayscale-[30%]'}`}>
+                <CardHeader className="pb-4">
                     <div className="flex justify-between items-start">
                         <div>
-                            <CardTitle className="text-lg">{job.service_name}</CardTitle>
-                            <p className="text-sm text-orange-500 font-medium">Order #{job.order_id}</p>
+                            <CardTitle className="text-lg font-medium text-white tracking-wide">{job.service_name}</CardTitle>
+                            <p className="text-xs text-primary font-mono mt-1 tracking-widest">ORDER #{job.order_id}</p>
                         </div>
                         <div className="flex flex-col items-end gap-2">
                             <StatusBadge />
@@ -114,32 +114,40 @@ export function JobCard({ job, requirements }: { job: Job, requirements: Require
                         </div>
                     </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Wrench className="w-4 h-4" />
-                        <span className="font-semibold">{job.make} {job.model} ({job.license_plate})</span>
+                <CardContent className="space-y-4">
+                    <div className="bg-black/40 p-3 rounded border border-white/5 space-y-2 text-sm">
+                        <div className="flex items-center justify-between text-zinc-300">
+                            <div className="flex items-center gap-2">
+                                <Wrench className="w-4 h-4 text-primary" />
+                                <span>Vehicle</span>
+                            </div>
+                            <span className="font-semibold">{job.make} {job.model} ({job.license_plate})</span>
+                        </div>
+                        <div className="flex items-center justify-between text-zinc-300">
+                            <div className="flex items-center gap-2">
+                                <Clock className="w-4 h-4 text-primary" />
+                                <span>Due Date</span>
+                            </div>
+                            <span className="font-semibold">{new Date(job.order_date).toLocaleDateString()}</span>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Clock className="w-4 h-4" />
-                        <span>Due: {new Date(job.order_date).toLocaleDateString()}</span>
-                    </div>
-                    <div className="pt-2 border-t border-border">
-                        <p className="text-xs text-muted-foreground mb-1">Customer</p>
-                        <p className="text-sm font-medium">{job.customer_name}</p>
+                    <div className="pt-2 flex justify-between items-center text-sm">
+                        <span className="text-zinc-500 font-light">Client:</span>
+                        <span className="text-white font-medium">{job.customer_name}</span>
                     </div>
                 </CardContent>
-                <CardFooter className="flex justify-end gap-2">
-                    <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Details</Button>
+                <CardFooter className="flex justify-end gap-2 pt-2 border-t border-white/5">
+                    <Button variant="outline" size="sm" className="border-white/10 hover:border-primary/50 text-zinc-300 rounded-sm font-bold tracking-wider" onClick={() => setOpen(true)}>DETAILS</Button>
 
-                    {job.status === 'ASSIGNED' && (
-                        <Button size="sm" className="bg-orange-600 hover:bg-orange-700 text-white" onClick={handleStart} disabled={loading}>
-                            {loading ? 'Starting...' : 'Start Job'}
+                    {isActive && job.status === 'ASSIGNED' && (
+                        <Button size="sm" className="bg-primary hover:bg-primary/80 text-primary-foreground font-bold tracking-wider rounded-sm shadow-[0_0_10px_rgba(255,215,0,0.15)]" onClick={handleStart} disabled={loading}>
+                            {loading ? 'STARTING...' : 'COMMENCE WORK'}
                         </Button>
                     )}
 
-                    {job.status === 'IN_PROGRESS' && (
-                        <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={() => setCompleteOpen(true)} disabled={loading}>
-                            Complete
+                    {isActive && job.status === 'IN_PROGRESS' && (
+                        <Button size="sm" className="bg-white hover:bg-zinc-200 text-black font-bold tracking-wider rounded-sm" onClick={() => setCompleteOpen(true)} disabled={loading}>
+                            MARK COMPLETE
                         </Button>
                     )}
                 </CardFooter>
